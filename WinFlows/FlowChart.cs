@@ -44,6 +44,7 @@ namespace WinFlows
             set
             {
                 _currentBlock = value;
+                ResizeCurrentBlockMarkers();
                 UpdateCurrentBlockMarker(_currentBlock);
             }
         }
@@ -333,11 +334,20 @@ namespace WinFlows
 
         private void ResizeCurrentBlockMarkers()
         {
-            var block = new Block();
-            block.Width = Globals.BlockSize.Width;
-            block.Height = Globals.BlockSize.Height;
-            Controls.Remove(block);
-            var surround = GetMarkerRectAroundBlock(block);
+            Rectangle surround;
+
+            if (CurrentBlock != null)
+            {
+                surround = GetMarkerRectAroundBlock(CurrentBlock);
+            }
+            else
+            {
+                var block = new Block();
+                block.Width = Globals.BlockSize.Width;
+                block.Height = Globals.BlockSize.Height;
+                Controls.Remove(block);
+                surround = GetMarkerRectAroundBlock(block);
+            }
 
             _currentBlockMarkers[0].Width = surround.Width - (int)Globals.CurrentBlockMarkerStroke;
             _currentBlockMarkers[0].Height = (int)Globals.CurrentBlockMarkerStroke;

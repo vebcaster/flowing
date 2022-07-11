@@ -14,7 +14,7 @@
         #region Blocks
 
         // Current block marker
-        public static Color CurrentBlockMarker { get; set; } = Color.Orange;
+        public static Color CurrentBlockMarker { get; set; } = Color.Tomato;
 
         // Start block
         public static Color StartStroke { get; set; } = Color.DarkGray;
@@ -38,7 +38,7 @@
 
         // Assign block
         public static Color AssignStroke { get; set; } = Color.DarkGray;
-        public static Color AssignFill { get; set; } = Color.LightSalmon;
+        public static Color AssignFill { get; set; } = Color.LightPink;
         public static Color AssignText { get; set; } = Color.CornflowerBlue;
 
         // If block

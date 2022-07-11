@@ -31,7 +31,7 @@ namespace WinFlows.Blocks
             g.DrawRectangle(pen, Globals.BlockRect);
 
             if (_assignmentOperator.Operands[0] is NotSetVariable)
-                StringHelper.DrawStringInsideBox(g, Globals.BlockRect, ColorScheme.AssignText, "ASSIGN");
+                StringHelper.DrawStringInsideBox(g, Globals.BlockRectTwoThirds, ColorScheme.AssignText, "ASSIGN");
             else
                 StringHelper.DrawStringInsideBox(g, Globals.BlockRect, ColorScheme.AssignText, _assignmentOperator.ToString());
         }

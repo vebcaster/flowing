@@ -28,7 +28,7 @@ namespace WinFlows.Blocks
             g.FillPolygon(brush, points);
             g.DrawPolygon(pen, points);
             if (_variableName == null)
-                StringHelper.DrawStringInsideBox(g, rect, ColorScheme.StartText, "INPUT");
+                StringHelper.DrawStringInsideBox(g, Globals.BlockRectTwoThirds, ColorScheme.StartText, "INPUT");
             else
                 StringHelper.DrawStringInsideBox(g, rect, ColorScheme.StartText, $"\u2192{_variableName}");
         }

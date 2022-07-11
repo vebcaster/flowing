@@ -28,14 +28,14 @@ namespace WinFlows.Blocks
             g.FillPolygon(brush, points);
             g.DrawPolygon(pen, points);
             if (_variableName == null)
-                StringHelper.DrawStringInsideBox(g, rect, ColorScheme.StartText, "OUTPUT");
+                StringHelper.DrawStringInsideBox(g, Globals.BlockRectTwoThirds, ColorScheme.StartText, "OUTPUT");
             else
                 StringHelper.DrawStringInsideBox(g, rect, ColorScheme.StartText, $"\u2190{_variableName}");
         }
 
         public override void DoubleClicked()
         {
-            var variableNames = Variables.Names;
+            var variableNames = Variables.Names.Where(v => !Variables.Get(v).Type.ToString().ToLower().Contains("list")).ToList();
 
             if (!variableNames.Any())
             {
