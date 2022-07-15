@@ -1,5 +1,4 @@
-﻿Y and N on while block
-While block
+﻿While block
 Output a constant string, not just a variable
 Lists of strings and booleans
 Tooltips on blocks

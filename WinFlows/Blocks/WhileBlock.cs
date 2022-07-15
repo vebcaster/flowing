@@ -1,4 +1,5 @@
 ﻿using WinFlows.Blocks.Connectors;
+using WinFlows.Helpers;
 
 namespace WinFlows.Blocks
 {
@@ -39,6 +40,23 @@ namespace WinFlows.Blocks
 
             g.FillPolygon(brush, points);
             g.DrawPolygon(pen, points);
+
+            // Draw the Y
+            var yWidth = Width / 10;
+            var yHeight = (int)(yWidth * 1.5);
+            StringHelper.DrawStringInsideBox(
+                g,
+                new Rectangle(Width - yWidth, Height / 10, yWidth, yHeight),
+                ColorScheme.IfYesText,
+                "Y");
+
+            // Draw the N
+            StringHelper.DrawStringInsideBox(
+                g,
+                new Rectangle(4 * Width / 7, 7 * Height / 10, yWidth, yHeight),
+                ColorScheme.IfNoText,
+                "N");
+
         }
 
         public override string Save()
