@@ -9,5 +9,11 @@
         {
             Type = type;
         }
+
+        public virtual string Save(int indent)
+        {
+            MessageBox.Show("Cannot save Expression");
+            return "EXPRESSION:NOT_SAVED";
+        }
     }
 }

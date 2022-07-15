@@ -1,4 +1,6 @@
-﻿namespace WinFlows.Blocks.Connectors
+﻿using System.Text;
+
+namespace WinFlows.Blocks.Connectors
 {
     public partial class SplitFlowConnector : Connector
     {
@@ -24,6 +26,15 @@
 
             DrawBendInTheMiddle(g, SidesFlags.North | SidesFlags.West);
             DrawBendInTheMiddle(g, SidesFlags.North | SidesFlags.East);
+        }
+
+        public override string Save()
+        {
+            var sb = new StringBuilder(base.Save());
+
+            sb.AppendLine($"MERGE_PARENT:{MergeParent.Id}");
+
+            return sb.ToString();
         }
     }
 }

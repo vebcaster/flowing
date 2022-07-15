@@ -35,7 +35,7 @@
             _variables.Add(name, Variable.Create(type, name));
         }
 
-        internal static void Clear()
+        public static void Clear()
         {
             _variables.Clear();
         }
@@ -48,7 +48,10 @@
                 return;
             }
 
-            _variables.Add(name, Variable.Create(Variable.TypeFromString(type), name));
+            if (Enum.TryParse(type, out ExpressionTypes exprType))
+                _variables.Add(name, Variable.Create(exprType, name));
+            else
+                MessageBox.Show($"Enum could not parse variable type {type}");
         }
     }
 }

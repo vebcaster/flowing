@@ -1,5 +1,4 @@
-﻿Save and load program
-Y and N on while block
+﻿Y and N on while block
 While block
 Output a constant string, not just a variable
 Lists of strings and booleans
@@ -16,3 +15,7 @@ Undo in flow chart
 Undo in expression builedr
 Nicer color scheme
 Random floating blocks in Expression builder (temporary / buffer etc)
+Pictures on buttons on MainForm
+Default values for variables
+Remember last program between restarts
+Refactor Save and Load (JSON ?)

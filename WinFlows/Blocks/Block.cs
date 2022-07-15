@@ -1,4 +1,4 @@
-﻿using WinFlows.Blocks.Connectors;
+﻿using System.Text;
 
 namespace WinFlows.Blocks
 {
@@ -11,7 +11,10 @@ namespace WinFlows.Blocks
             Size = new Size(Globals.BlockSize.Width, Globals.BlockSize.Height);
 
             FlowChart.Instance.Controls.Add(this);
+            Id = Guid.NewGuid().ToString();
         }
+
+        public string Id;
 
         // Position on the chart table
         public int Row { get; set; }
@@ -76,6 +79,22 @@ namespace WinFlows.Blocks
             e.Graphics.DrawString(
                 $"r:{Row} c:{Column} w:{Width} h:{Height}",
                 new Font("Verdana", 9), Brushes.Red, 0, 0);
+        }
+
+        public virtual string Save()
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"NEW_BLOCK_ID:{Id}");
+            sb.AppendLine($"TYPE:{GetType()}");
+            if (West != null)
+                sb.AppendLine($"WEST:{West.Id}");
+            if (South != null)
+                sb.AppendLine($"SOUTH:{South.Id}");
+            if (East != null)
+                sb.AppendLine($"EAST:{East.Id}");
+
+            return sb.ToString();
         }
     }
 }

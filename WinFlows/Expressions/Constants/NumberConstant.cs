@@ -22,5 +22,13 @@
         {
             return Value.ToString();
         }
+
+        public override string Save(int indent)
+        {
+            return
+                $"{string.Empty.PadLeft(indent * 2)}EXPRESSIONLEVEL:{indent}:START{Environment.NewLine}" +
+                $"{string.Empty.PadLeft(indent * 2)}CONSTANT_NUMBER:{Value}{Environment.NewLine}" +
+                $"{string.Empty.PadLeft(indent * 2)}EXPRESSIONLEVEL:{indent}:END{Environment.NewLine}";
+        }
     }
 }

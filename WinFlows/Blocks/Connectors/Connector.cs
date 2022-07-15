@@ -1,4 +1,6 @@
-﻿namespace WinFlows.Blocks.Connectors
+﻿using System.Text;
+
+namespace WinFlows.Blocks.Connectors
 {
     public partial class Connector : Block
     {
@@ -120,6 +122,15 @@
                 _isHighlighted = false;
                 Invalidate();
             }
+        }
+
+        public override string Save()
+        {
+            var sb = new StringBuilder(base.Save());
+
+            sb.AppendLine($"FROM:{From.Id}");
+
+            return sb.ToString();
         }
     }
 }

@@ -36,5 +36,21 @@ namespace WinFlows.Expressions.Operators
 
             return sb.ToString();
         }
+
+        public override string Save(int indent)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"{string.Empty.PadLeft(indent * 2)}EXPRESSIONLEVEL:{indent}:START");
+
+            sb.AppendLine($"{string.Empty.PadLeft(indent * 2)}OPERATOR:{GetType()}");
+            for (int i = 0; i < Operands.Length; i++)
+            {
+                sb.AppendLine($"{string.Empty.PadLeft(indent * 2)}OPERAND_NO:{i}");
+                sb.AppendLine(Operands[i].Save(indent + 1));
+            }
+
+            sb.AppendLine($"{string.Empty.PadLeft(indent * 2)}EXPRESSIONLEVEL:{indent}:END");
+            return sb.ToString();
+        }
     }
 }

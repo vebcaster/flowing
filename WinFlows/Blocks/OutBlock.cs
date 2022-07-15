@@ -1,11 +1,12 @@
-﻿using WinFlows.Expressions.Variables;
+﻿using System.Text;
+using WinFlows.Expressions.Variables;
 using WinFlows.Helpers;
 
 namespace WinFlows.Blocks
 {
     public partial class OutBlock : Block
     {
-        private string? _variableName;
+        public string? VariableName { private get; set; }
 
         public OutBlock()
         {
@@ -27,10 +28,10 @@ namespace WinFlows.Blocks
 
             g.FillPolygon(brush, points);
             g.DrawPolygon(pen, points);
-            if (_variableName == null)
+            if (string.IsNullOrWhiteSpace(VariableName))
                 StringHelper.DrawStringInsideBox(g, Globals.BlockRectTwoThirds, ColorScheme.StartText, "OUTPUT");
             else
-                StringHelper.DrawStringInsideBox(g, rect, ColorScheme.StartText, $"\u2190{_variableName}");
+                StringHelper.DrawStringInsideBox(g, rect, ColorScheme.StartText, $"\u2190{VariableName}");
         }
 
         public override void DoubleClicked()
@@ -43,24 +44,33 @@ namespace WinFlows.Blocks
                 return;
             }
 
-            using var combo = new OptionCombo(variableNames, "Which variable to write?", _variableName);
+            using var combo = new OptionCombo(variableNames, "Which variable to write?", VariableName);
             combo.ShowDialog(this);
             if (combo.DialogResult == DialogResult.OK)
             {
-                _variableName = combo.SelectedItem;
+                VariableName = combo.SelectedItem;
                 Invalidate();
             }
         }
 
         public override Block? Execute()
         {
-            if (string.IsNullOrEmpty(_variableName))
+            if (string.IsNullOrEmpty(VariableName))
                 MainForm.ConsoleWrite("ERROR: Nothing to write");
-            else if (!Variables.Exists(_variableName))
-                MainForm.ConsoleWrite($"ERROR: Variable {_variableName} no longer exists");
+            else if (!Variables.Exists(VariableName))
+                MainForm.ConsoleWrite($"ERROR: Variable {VariableName} no longer exists");
             else
-                MainForm.ConsoleWrite(Variables.Get(_variableName).Evaluate().ToString());
+                MainForm.ConsoleWrite(Variables.Get(VariableName).Evaluate().ToString());
             return South;
+        }
+
+        public override string Save()
+        {
+            var sb = new StringBuilder(base.Save());
+
+            sb.AppendLine($"VARIABLE:{VariableName}");
+
+            return sb.ToString();
         }
     }
 }

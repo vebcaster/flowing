@@ -29,9 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.flowChart1 = new WinFlows.FlowChart();
+            this.flowChart = new WinFlows.FlowChart();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.btnLoad = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.dragAssignBlock1 = new WinFlows.Draggables.Blocks.DragAssignBlock();
             this.dragWhileBlock1 = new WinFlows.Draggables.Blocks.DragWhileBlock();
             this.dragIfBlock1 = new WinFlows.Draggables.Blocks.DragIfBlock();
             this.dragOutBlock1 = new WinFlows.Draggables.Blocks.DragOutBlock();
@@ -40,7 +43,6 @@
             this.btnVariables = new System.Windows.Forms.Button();
             this.console = new System.Windows.Forms.TextBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.dragAssignBlock1 = new WinFlows.Draggables.Blocks.DragAssignBlock();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -51,19 +53,19 @@
             this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // flowChart1
+            // flowChart
             // 
-            this.flowChart1.AutoScroll = true;
-            this.flowChart1.AutoSize = true;
-            this.flowChart1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowChart1.BackColor = System.Drawing.Color.White;
-            this.flowChart1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.flowChart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowChart1.Location = new System.Drawing.Point(0, 0);
-            this.flowChart1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
-            this.flowChart1.Name = "flowChart1";
-            this.flowChart1.Size = new System.Drawing.Size(635, 465);
-            this.flowChart1.TabIndex = 0;
+            this.flowChart.AutoScroll = true;
+            this.flowChart.AutoSize = true;
+            this.flowChart.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowChart.BackColor = System.Drawing.Color.White;
+            this.flowChart.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.flowChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowChart.Location = new System.Drawing.Point(0, 0);
+            this.flowChart.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.flowChart.Name = "flowChart";
+            this.flowChart.Size = new System.Drawing.Size(635, 465);
+            this.flowChart.TabIndex = 0;
             // 
             // splitContainer1
             // 
@@ -79,7 +81,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.flowChart1);
+            this.splitContainer1.Panel2.Controls.Add(this.flowChart);
             this.splitContainer1.Size = new System.Drawing.Size(635, 648);
             this.splitContainer1.SplitterDistance = 178;
             this.splitContainer1.SplitterWidth = 5;
@@ -95,6 +97,8 @@
             // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.splitContainer2.Panel1.Controls.Add(this.btnLoad);
+            this.splitContainer2.Panel1.Controls.Add(this.btnSave);
             this.splitContainer2.Panel1.Controls.Add(this.dragAssignBlock1);
             this.splitContainer2.Panel1.Controls.Add(this.dragWhileBlock1);
             this.splitContainer2.Panel1.Controls.Add(this.dragIfBlock1);
@@ -111,6 +115,39 @@
             this.splitContainer2.SplitterDistance = 267;
             this.splitContainer2.SplitterWidth = 5;
             this.splitContainer2.TabIndex = 0;
+            // 
+            // btnLoad
+            // 
+            this.btnLoad.Location = new System.Drawing.Point(175, 16);
+            this.btnLoad.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.Size = new System.Drawing.Size(32, 31);
+            this.btnLoad.TabIndex = 8;
+            this.btnLoad.Text = "L";
+            this.toolTip.SetToolTip(this.btnLoad, "Run program / Next step");
+            this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(119, 16);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(32, 31);
+            this.btnSave.TabIndex = 7;
+            this.btnSave.Text = "S";
+            this.toolTip.SetToolTip(this.btnSave, "Run program / Next step");
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // dragAssignBlock1
+            // 
+            this.dragAssignBlock1.BackColor = System.Drawing.Color.White;
+            this.dragAssignBlock1.Location = new System.Drawing.Point(175, 55);
+            this.dragAssignBlock1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.dragAssignBlock1.Name = "dragAssignBlock1";
+            this.dragAssignBlock1.Size = new System.Drawing.Size(57, 40);
+            this.dragAssignBlock1.TabIndex = 6;
             // 
             // dragWhileBlock1
             // 
@@ -146,7 +183,7 @@
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Size = new System.Drawing.Size(32, 31);
             this.btnExecute.TabIndex = 2;
-            this.btnExecute.Text = "RN";
+            this.btnExecute.Text = "R";
             this.toolTip.SetToolTip(this.btnExecute, "Run program / Next step");
             this.btnExecute.UseVisualStyleBackColor = true;
             this.btnExecute.Click += new System.EventHandler(this.btnExecute_Click);
@@ -184,15 +221,6 @@
             this.console.TabIndex = 0;
             this.console.Text = "CONSOLE";
             // 
-            // dragAssignBlock1
-            // 
-            this.dragAssignBlock1.BackColor = System.Drawing.Color.White;
-            this.dragAssignBlock1.Location = new System.Drawing.Point(175, 55);
-            this.dragAssignBlock1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.dragAssignBlock1.Name = "dragAssignBlock1";
-            this.dragAssignBlock1.Size = new System.Drawing.Size(57, 40);
-            this.dragAssignBlock1.TabIndex = 6;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -217,7 +245,7 @@
 
         #endregion
 
-        private FlowChart flowChart1;
+        private FlowChart flowChart;
         private SplitContainer splitContainer1;
         private SplitContainer splitContainer2;
         private Button btnVariables;
@@ -229,5 +257,7 @@
         private Draggables.Blocks.DragIfBlock dragIfBlock1;
         private Draggables.Blocks.DragWhileBlock dragWhileBlock1;
         private Draggables.Blocks.DragAssignBlock dragAssignBlock1;
+        private Button btnLoad;
+        private Button btnSave;
     }
 }

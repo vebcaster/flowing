@@ -1,4 +1,6 @@
-﻿namespace WinFlows.Blocks.Connectors
+﻿using System.Text;
+
+namespace WinFlows.Blocks.Connectors
 {
     public partial class LoopFlowConnector : Connector
     {
@@ -32,6 +34,15 @@
                 g.FillPolygon(Brush, arrowHead);
                 g.DrawPolygon(Pen, arrowHead);
             }
+        }
+
+        public override string Save()
+        {
+            var sb = new StringBuilder();
+            
+            sb.AppendLine($"EAST_INPUT:{EastInput.Id}");
+
+            return sb.ToString();
         }
     }
 }

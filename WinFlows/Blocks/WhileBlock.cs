@@ -40,5 +40,11 @@ namespace WinFlows.Blocks
             g.FillPolygon(brush, points);
             g.DrawPolygon(pen, points);
         }
+
+        public override string Save()
+        {
+            MessageBox.Show("While Blocks cannot be saved");
+            throw new NotImplementedException("While blocks cannot be saved");
+        }
     }
 }

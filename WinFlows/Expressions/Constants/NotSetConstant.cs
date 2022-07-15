@@ -19,5 +19,13 @@
         {
             return "DRAG SOMETHING HERE";
         }
+
+        public override string Save(int indent)
+        {
+            return
+                $"{string.Empty.PadLeft(indent * 2)}EXPRESSIONLEVEL:{indent}:START{Environment.NewLine}" +
+                $"{string.Empty.PadLeft(indent * 2)}CONSTANT_NOT_SET:NOT_SET{Environment.NewLine}" +
+                $"{string.Empty.PadLeft(indent * 2)}EXPRESSIONLEVEL:{indent}:END{Environment.NewLine}";
+        }
     }
 }

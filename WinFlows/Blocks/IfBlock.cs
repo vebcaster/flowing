@@ -1,4 +1,5 @@
-﻿using WinFlows.Blocks.Connectors;
+﻿using System.Text;
+using WinFlows.Blocks.Connectors;
 using WinFlows.Expressions;
 using WinFlows.Expressions.Constants;
 using WinFlows.Helpers;
@@ -8,7 +9,14 @@ namespace WinFlows.Blocks
     public partial class IfBlock : Block
     {
         public SplitFlowConnector MergeConnector { get; set; }
-        public Expression Expression { get; set; }
+        public Expression Expression { private get; set; }
+
+        public IfBlock()
+        {
+            InitializeComponent();
+            MergeConnector = null!;
+            Expression = new LogicalConstant();
+        }
 
         public IfBlock(SplitFlowConnector mergeConnector)
         {
@@ -71,6 +79,18 @@ namespace WinFlows.Blocks
                 return East;
             else
                 return West;
+        }
+
+        public override string Save()
+        {
+            var sb = new StringBuilder(base.Save());
+
+            var expression = Expression.Save(0);
+            sb.AppendLine($"MERGE_CONNECTOR:{MergeConnector.Id}");
+            sb.AppendLine($"EXPRESSION:");
+            sb.AppendLine(expression);
+
+            return sb.ToString();
         }
     }
 }

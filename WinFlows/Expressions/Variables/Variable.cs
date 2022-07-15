@@ -37,30 +37,17 @@ namespace WinFlows.Expressions.Variables
             }
         }
 
-        public static ExpressionTypes TypeFromString(string typeName)
-        {
-            typeName = typeName.ToLower();
-
-            if (typeName.Contains("list"))
-            {
-                MessageBox.Show($"Variables of type {typeName} are not supported yet. Making a string instead.");
-                return ExpressionTypes.String;
-            }
-
-            if (typeName.Contains("logic"))
-                return ExpressionTypes.Logical;
-            if (typeName.Contains("number"))
-                return ExpressionTypes.Number;
-            if (typeName.Contains("string"))
-                return ExpressionTypes.String;
-
-            MessageBox.Show($"Could not figure out variable type for {typeName}. Making a string instead.");
-            return ExpressionTypes.String;
-        }
-
         public override string ToString()
         {
             return _name;
+        }
+
+        public override string Save(int indent)
+        {
+            return
+                $"{string.Empty.PadLeft(indent * 2)}EXPRESSIONLEVEL:{indent}:START{Environment.NewLine}" +
+                $"{string.Empty.PadLeft(indent * 2)}VARIABLE:{_name}{Environment.NewLine}" +
+                $"{string.Empty.PadLeft(indent * 2)}EXPRESSIONLEVEL:{indent}:END{Environment.NewLine}";
         }
     }
 }

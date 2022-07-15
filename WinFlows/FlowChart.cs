@@ -1,9 +1,14 @@
-﻿using WinFlows.Blocks;
+﻿using System.Reflection;
+using System.Text;
+using WinFlows.Blocks;
 using WinFlows.Blocks.Connectors;
 using WinFlows.Expressions;
 using WinFlows.Expressions.Constants;
+using WinFlows.Expressions.Operators;
 using WinFlows.Expressions.Operators.Logical;
 using WinFlows.Expressions.Variables;
+using WinFlows.Expressions.Variables.Lists;
+using WinFlows.Helpers;
 
 namespace WinFlows
 {
@@ -79,7 +84,7 @@ namespace WinFlows
 
         public void Reset()
         {
-            RemoveNonBlockChildControls();
+            RemoveAllBlockChildControls();
 
             StartBlock = new StartBlock();
             EndBlock = new EndBlock();
@@ -130,7 +135,7 @@ namespace WinFlows
             Reposition();
         }
 
-        private void RemoveNonBlockChildControls()
+        private void RemoveAllBlockChildControls()
         {
             var toRemove = new List<Control>();
 
@@ -394,6 +399,369 @@ namespace WinFlows
                 (int)(block.Top - Globals.CurrentBlockMarkerStroke * 2),
                 (int)(block.Width + Globals.CurrentBlockMarkerStroke * 4),
                 (int)(block.Height + Globals.CurrentBlockMarkerStroke * 4));
+        }
+
+        public string GetSaveString()
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("VARIABLES: START");
+            foreach (var varName in Variables.Names)
+                sb.AppendLine($"{varName}:{Variables.Get(varName).Type}");
+            sb.AppendLine("VARIABLES: END");
+
+            foreach (var child in Controls)
+                if (child is Block)
+                    sb.AppendLine(((Block)child).Save());
+
+            return sb.ToString();
+        }
+
+        public void LoadFromString(string s)
+        {
+            try
+            {
+                // TODO: make a copy of the existing program
+                LoadVariables(s);
+                LoadBlocks(s);
+                Reposition();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                // TODO: restore the original program
+            }
+        }
+
+        private void LoadVariables(string s)
+        {
+            Variables.Clear();
+
+            var index1 = s.IndexOf("VARIABLES: START") + "VARIABLES: START".Length;
+            var index2 = s.IndexOf("VARIABLES: END");
+
+            if (index1 == -1 || index2 == -1)
+            {
+                var err = "Invalid format. Could not find variable border markers.";
+                MessageBox.Show(err);
+                throw new InvalidDataException(err);
+            }
+
+            s = s.Substring(index1, index2 - index1);
+
+            var lines = s.Split(Environment.NewLine);
+
+            foreach (var line in lines)
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
+
+                var parts = line.Split(":");
+                if (parts.Length != 2)
+                {
+                    var err = $"Invalid format. Cannot read variable {line}";
+                    MessageBox.Show(err);
+                    throw new InvalidDataException(err);
+                }
+
+                Variables.Create(parts[0], parts[1]);
+            }
+        }
+
+        private void LoadBlocks(string s)
+        {
+            RemoveAllBlockChildControls();
+
+            Dictionary<string, Block> blocks = new Dictionary<string, Block>();
+
+            var original = s;
+            int index1, index2;
+
+            // Load blocks ignoring IDs
+            while (true)
+            {
+                index1 = s.IndexOf("NEW_BLOCK_ID:");
+                index2 = s.IndexOf("NEW_BLOCK_ID:", index1 + 1);
+
+                if (index1 == -1)
+                    break;
+
+                string blockString;
+                if (index2 != -1)
+                    blockString = s.Substring(index1, index2 - index1);
+                else
+                    blockString = s.Substring(index1);
+
+                var block = LoadBlock(blockString);
+                blocks[block.Id] = block;
+                if (block is StartBlock)
+                    StartBlock = block;
+
+                if (index2 == -1)
+                    break;
+                s = s.Substring(index2);
+            }
+
+            // Now connect blocks considering their IDs
+            s = original;
+            while (true)
+            {
+                index1 = s.IndexOf("NEW_BLOCK_ID:");
+                index2 = s.IndexOf("NEW_BLOCK_ID:", index1 + 1);
+
+                if (index1 == -1)
+                    break;
+
+                string blockString;
+                if (index2 != -1)
+                    blockString = s.Substring(index1, index2 - index1);
+                else
+                    blockString = s.Substring(index1);
+
+                LoadBlockConnections(blockString, blocks);
+
+                if (index2 == -1)
+                    break;
+                s = s.Substring(index2);
+            }
+        }
+
+        private void LoadBlockConnections(string s, Dictionary<string, Block> blocks)
+        {
+            var lines = s.Split(Environment.NewLine);
+
+            if (!lines[0].StartsWith("NEW_BLOCK_ID:"))
+            {
+                var err = $"Expected line to start with NEW_BLOCK_ID: but found {lines[0]}";
+                MessageBox.Show(err);
+                throw new InvalidDataException(err);
+            }
+            var id = lines[0].Split(":")[1];
+            var block = blocks[id];
+
+            foreach (var line in lines)
+            {
+                if (!line.Contains(":"))
+                    continue;
+
+                var parts = line.Split(":");
+                var first = parts[0];
+                var otherBlockId = parts[1];
+                Block otherBlock = null!;
+                if (blocks.ContainsKey(otherBlockId))
+                    otherBlock = blocks[otherBlockId];
+
+                switch (first)
+                {
+                    case "WEST":
+                        block.West = otherBlock;
+                        break;
+                    case "SOUTH":
+                        block.South = otherBlock;
+                        break;
+                    case "EAST":
+                        block.East = otherBlock;
+                        break;
+                    case "FROM":
+                        ((Connector)block).From = otherBlock;
+                        break;
+                    case "MERGE_PARENT":
+                        ((SplitFlowConnector)block).MergeParent = otherBlock;
+                        break;
+                    case "MERGE_CONNECTOR":
+                        ((IfBlock)block).MergeConnector = (SplitFlowConnector)otherBlock;
+                        break;
+                    case "EAST_INPUT":
+                        ((LoopFlowConnector)block).EastInput = (Connector)otherBlock;
+                        break;
+                    // TODO: WHILE BLOCK LOOP FLOW CONNECTOR    case "?"
+                    default:
+                        continue;
+                }
+            }
+        }
+
+        private Block LoadBlock(string s)
+        {
+            var lines = s.Split(Environment.NewLine);
+
+            if (!lines[0].StartsWith("NEW_BLOCK_ID:"))
+            {
+                var err = $"Expected line to start with NEW_BLOCK_ID: but found {lines[0]}";
+                MessageBox.Show(err);
+                throw new InvalidDataException(err);
+            }
+            if (!lines[1].StartsWith("TYPE:"))
+            {
+                var err = $"Expected line to start with TYPE: but found {lines[0]}";
+                MessageBox.Show(err);
+                throw new InvalidDataException(err);
+            }
+
+            var id = lines[0].Substring("NEW_BLOCK_ID:".Length);
+            var type = lines[1].Substring("TYPE:".Length);
+
+            var block = (Block)Activator.CreateInstance(
+                Type.GetType(type));
+            block.Id = id;
+
+            for (int i = 2; i < lines.Length; i++)
+                if (!string.IsNullOrWhiteSpace(lines[i]))
+                {
+                    var index = lines[i].IndexOf(":");
+                    if (index == -1)
+                    {
+                        var err = $"Expected to find \":\" on line {lines[i]}";
+                        MessageBox.Show(err);
+                        throw new InvalidDataException(err);
+                    }
+                    var firstPart = lines[i].Substring(0, index);
+                    var secondPart = lines[i].Substring(index + 1);
+
+                    switch (firstPart)
+                    {
+                        case "WEST":
+                        case "SOUTH":
+                        case "EAST":
+                        case "FROM":
+                        case "MERGE_PARENT":
+                        case "MERGE_CONNECTOR":
+                        case "EAST_INPUT":
+                            // TODO: WHILE BLOCK LOOP FLOW CONNECTOR    case "?"
+                            continue;
+
+                        case "VARIABLE":
+                            if (block is InBlock)
+                                ((InBlock)block).VariableName = secondPart;
+                            else if (block is OutBlock)
+                                ((OutBlock)block).VariableName = secondPart;
+                            else
+                            {
+                                var err = $"Unexpected VARIABLE: in {block.GetType()}";
+                                MessageBox.Show(err);
+                                throw new InvalidDataException(err);
+                            }
+                            break;
+                        case "EXPRESSION":
+                        case "ASSIGNMENT":
+                            var expressionLines = lines[(i + 1)..];
+                            var expression = LoadExpressionFromLines(expressionLines, 0);
+                            if (firstPart.Equals("EXPRESSION") && block is IfBlock)
+                                ((IfBlock)block).Expression = expression;
+                            else if (firstPart.Equals("ASSIGNMENT") && block is AssignBlock)
+                                ((AssignBlock)block).AssignmentOperator = (AssignmentOperator)expression;
+                            else
+                            {
+                                var err = $"Unhandled case {firstPart} for {block.GetType()}";
+                                MessageBox.Show(err);
+                                throw new InvalidDataException(err);
+                            }
+                            break;
+                    }
+                }
+
+            return block;
+        }
+
+        private Expression LoadExpressionFromLines(string[] expressionLines, int indent)
+        {
+            expressionLines = Trim(expressionLines);
+
+            if (!expressionLines[0].Trim().Equals($"EXPRESSIONLEVEL:{indent}:START"))
+            {
+                var err = $"Unexpected line {expressionLines[0]}. Was expecting EXPRESSIONLEVEL:{indent}:START";
+                MessageBox.Show(err);
+                throw new InvalidDataException(err);
+            }
+            if (!expressionLines[expressionLines.Length - 1].Trim().Equals($"EXPRESSIONLEVEL:{indent}:END"))
+            {
+                var err = $"Unexpected line {expressionLines[expressionLines.Length - 1]}. Was expecting EXPRESSIONLEVEL:{indent}:END";
+                MessageBox.Show(err);
+                throw new InvalidDataException(err);
+            }
+
+            expressionLines = expressionLines[1..(expressionLines.Length - 1)];
+
+            var index = expressionLines[0].IndexOf(":");
+            var first = expressionLines[0].Substring(0, index);
+            var second = expressionLines[0].Substring(index + 1);
+
+            return first.Trim() switch
+            {
+                "CONSTANT_LOGICAL" => new LogicalConstant(bool.Parse(second)),
+                "CONSTANT_NUMBER" => new NumberConstant(float.Parse(second)),
+                "CONSTANT_STRING" => new StringConstant(second),
+                "CONSTANT_NOT_SET" => new NotSetConstant(),
+                "VARIABLE" => Variables.Names.Contains(second) 
+                                ? Variables.Get(second) :
+                                    second.Equals("Drag a list here")
+                                    ? new DummyListOfNumbers()
+                                    : new NotSetVariable(),
+                "OPERATOR" => LoadOperatorFromLines(expressionLines, indent),
+                _ => throw new ArgumentException($"{first} is not a valid start for an Expression")
+            };
+        }
+
+        private Operator LoadOperatorFromLines(string[] expressionLines, int indent)
+        {
+            expressionLines = Trim(expressionLines);
+
+            // OPERATOR:WinFlows.Expressions.Operators.Logical.LogicalAndOperator
+            if (!expressionLines[0].Trim().StartsWith("OPERATOR:"))
+            {
+                var err = $"Expected line to start with OPERATOR: but found {expressionLines[0]}";
+                MessageBox.Show(err);
+                throw new InvalidDataException(err);
+            }
+
+            var index = expressionLines[0].IndexOf(":");
+            var second = expressionLines[0].Substring(index + 1);
+
+            var op = (Operator)Activator.CreateInstance(Type.GetType(second));
+            expressionLines = expressionLines[1..];
+
+            for (int i = 0; i < op.Operands.Length; i++)
+            {
+                string[] operandLines;
+
+                if (!expressionLines[0].Trim().Equals($"OPERAND_NO:{i}"))
+                {
+                    var err = $"Unexpected {expressionLines[0]}. Was expecting OPERAND_NO:{i}";
+                    MessageBox.Show(err);
+                    throw new InvalidDataException(err);
+                }
+
+                if (i == op.Operands.Length - 1)
+                    op.Operands[i] = LoadExpressionFromLines(expressionLines[1..], indent + 1);
+                else
+                {
+                    var lookingFor = $"{string.Empty.PadLeft(indent * 2)}OPERAND_NO:{i + 1}";
+                    var j = 0;
+                    while (j < expressionLines.Length && !expressionLines[j].Equals(lookingFor))
+                        j++;
+                    if (j == expressionLines.Length)
+                    {
+                        var err = $"Did not find end of operand {i}";
+                        MessageBox.Show(err);
+                        throw new InvalidDataException(err);
+                    }
+                    op.Operands[i] = LoadExpressionFromLines(expressionLines[1..j], indent + 1);
+
+                    expressionLines = expressionLines[j..];
+                }
+            }
+
+            return op;
+        }
+
+        private string[] Trim(string[] expressionLines)
+        {
+            while (string.IsNullOrWhiteSpace(expressionLines[0]))
+                expressionLines = expressionLines[1..];
+            while (string.IsNullOrWhiteSpace(expressionLines[expressionLines.Length - 1]))
+                expressionLines = expressionLines[..(expressionLines.Length - 1)];
+
+            return expressionLines;
         }
     }
 }
