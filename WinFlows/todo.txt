@@ -1,22 +1,22 @@
 ﻿Lists of strings and booleans
-Tooltips on blocks
+Assign to strings and booleans
 Fix the Zoom out bug
-More string operations: compare, letter x of string
-Delete block
-Rounded corners on blocks and draggables
-DrawStringInsideBox helper write on multiple lines
-Draggable pictures instead of the standard cursor
-Make a copy of Expression and use it when firing up Builder
-Make a copy of the whole program
-Undo in flow chart
-Undo in expression builedr
-Nicer color scheme
-Random floating blocks in Expression builder (temporary / buffer etc)
-Pictures on buttons on MainForm
-Default values for variables
-Remember last program between restarts
-Refactor Save and Load (JSON ?)
 Stop program from running
 Prevent program from running if it is already running
-Assign to strings and booleans
 Double-click constant in ExpressionBuilder brings up the dialog pre-populated
+More string operations: compare, letter x of string
+More number operations: compare
+Default values for variables
+DrawStringInsideBox helper write on multiple lines
+Tooltips on blocks
+Pictures on buttons on MainForm
+Make a copy of Expression and use it when firing up Builder
+Make a copy of the whole program, use it when loading
+Undo in flow chart
+Undo in expression builder
+Remember last program between restarts
+Rounded corners on blocks and draggables
+Nicer color scheme
+Draggable pictures instead of the standard cursor
+Random floating blocks in Expression builder (temporary / buffer etc)
+Refactor Save and Load (JSON ?)

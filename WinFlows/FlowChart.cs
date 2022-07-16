@@ -133,6 +133,135 @@ namespace WinFlows
             Reposition();
         }
 
+        public void DeleteBlock(Block block)
+        {
+            if (!Controls.Contains(block))
+                throw new ArgumentException("Cannot find block to delete");
+
+            // Find the True North and True South, connectors and blocks
+            Connector northConn = null, southConn = null;
+            Block northBlock = null, southBlock = null;
+            var blocksToRemove = new List<Block>();
+
+            // North
+            foreach (var child in Controls)
+                if (child is Connector &&
+                    (
+                        ((Connector)child).South == block
+                        || ((Connector)child).East == block
+                        || ((Connector)child).West == block
+                    ))
+                {
+                    northConn = (Connector)child;
+                    if (northConn is LoopFlowConnector)
+                    {
+                        foreach (var child2 in Controls)
+                            if (child2 is Connector &&
+                                child2 is not RightUpLeftConnector &&
+                                child2 is not DownRightUpLeftConnector &&
+                                (
+                                    ((Connector)child2).South == northConn
+                                    || ((Connector)child2).East == northConn
+                                    || ((Connector)child2).West == northConn
+                                ))
+                            {
+                                northConn = (Connector)child2;
+                                break;
+                            }
+                    }
+                    northBlock = northConn.From;
+                    break;
+                }
+            if (northBlock == null || northConn == null)
+                throw new InvalidOperationException("Cannot find what lies north of this block");
+
+            // South
+            if (block is IfBlock)
+                southConn = (Connector)((IfBlock)block).MergeConnector.South;
+            else
+                southConn = (Connector)block.South;
+
+            southBlock = southConn.South;
+
+            // Keep a list of the blocks we need to delete
+            AddTree(northConn, southConn, blocksToRemove);
+            if (!blocksToRemove.Contains(southConn))
+                blocksToRemove.Add(southConn);
+
+            // Create the right type of connector
+            Connector newConn = null;
+
+            if (northConn is DownConnector && southConn is DownConnector)
+                newConn = new DownConnector();
+            else if (northConn is DownConnector && southConn is DownLeftConnector)
+                newConn = new DownLeftConnector();
+            else if (northConn is DownConnector && southConn is DownRightConnector)
+                newConn = new DownRightConnector();
+            else if (northConn is DownConnector && southConn is DownRightUpLeftConnector)
+                newConn = new DownRightUpLeftConnector();
+
+            else if (northConn is LeftDownConnector && southConn is DownConnector)
+                newConn = new LeftDownConnector();
+            else if (northConn is LeftDownConnector && southConn is DownRightConnector)
+                newConn = new LeftDownRightConnector();
+
+            else if (northConn is RightDownConnector && southConn is DownConnector)
+                newConn = new RightDownConnector();
+            else if (northConn is RightDownConnector && southConn is DownLeftConnector)
+                newConn = new RightDownLeftConnector();
+            else if (northConn is RightDownConnector && southConn is DownRightUpLeftConnector)
+                newConn = new RightUpLeftConnector();
+
+            else
+            {
+                var err = $"Cannot delete block between {northConn.GetType()} and {southConn.GetType()}";
+                MessageBox.Show(err);
+                throw new InvalidOperationException(err);
+            }
+
+            newConn.From = northBlock;
+            newConn.South = southBlock;
+
+            if (newConn is DownConnector
+                    || newConn is DownFirstSingleBendedConnector
+                    || newConn is DownRightUpLeftConnector)
+                northBlock.South = newConn;
+            else if (newConn is LeftDownConnector
+                    || newConn is LeftDownRightConnector)
+                northBlock.West = newConn;
+            else if (newConn is RightDownConnector
+                    || newConn is RightDownLeftConnector
+                    || newConn is RightUpLeftConnector)
+                northBlock.East = newConn;
+
+            if (newConn is RightUpLeftConnector
+                    || newConn is RightUpLeftConnector)
+                ((LoopFlowConnector)southBlock).EastInput = newConn;
+
+            foreach (Block b in blocksToRemove)
+                Controls.Remove(b);
+
+            Reposition();
+        }
+
+        private void AddTree(Block startFrom, Block stopAt, List<Block> list)
+        {
+            if (startFrom == stopAt)
+                return;
+
+            if (list.Contains(startFrom))
+                return;
+
+            list.Add(startFrom);
+
+            if (startFrom.East != null)
+                AddTree(startFrom.East, stopAt, list);
+            if (startFrom.West != null)
+                AddTree(startFrom.West, stopAt, list);
+            if (startFrom.South != null)
+                AddTree(startFrom.South, stopAt, list);
+        }
+
         private void RemoveAllBlockChildControls()
         {
             var toRemove = new List<Control>();
@@ -695,7 +824,7 @@ namespace WinFlows
                 "CONSTANT_NUMBER" => new NumberConstant(float.Parse(second)),
                 "CONSTANT_STRING" => new StringConstant(second),
                 "CONSTANT_NOT_SET" => new NotSetConstant(),
-                "VARIABLE" => Variables.Names.Contains(second) 
+                "VARIABLE" => Variables.Names.Contains(second)
                                 ? Variables.Get(second) :
                                     second.Equals("Drag a list here")
                                     ? new DummyListOfNumbers()

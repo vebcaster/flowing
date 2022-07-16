@@ -7,6 +7,8 @@ namespace WinFlows.Blocks
         public EndBlock()
         {
             InitializeComponent();
+
+            ContextMenuStrip = null;
         }
 
         public override Block? Execute()

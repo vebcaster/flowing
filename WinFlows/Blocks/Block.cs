@@ -96,5 +96,10 @@ namespace WinFlows.Blocks
 
             return sb.ToString();
         }
+
+        private void menuDeleteBlock_Click(object sender, EventArgs e)
+        {
+            FlowChart.Instance.DeleteBlock(this);
+        }
     }
 }

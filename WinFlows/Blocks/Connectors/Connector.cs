@@ -27,6 +27,7 @@ namespace WinFlows.Blocks.Connectors
         {
             InitializeComponent();
             From = this;
+            ContextMenuStrip = null;
         }
 
         private void Connector_DragEnter(object sender, DragEventArgs e)
