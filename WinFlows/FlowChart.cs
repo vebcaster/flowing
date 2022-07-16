@@ -112,6 +112,14 @@ namespace WinFlows
             Variables.Create("n2", ExpressionTypes.ListOfNumbers);
             Variables.Create("n3", ExpressionTypes.ListOfNumbers);
 
+            Variables.Create("b1", ExpressionTypes.ListOfLogicals);
+            Variables.Create("b2", ExpressionTypes.ListOfLogicals);
+            Variables.Create("b3", ExpressionTypes.ListOfLogicals);
+
+            Variables.Create("str1", ExpressionTypes.ListOfStrings);
+            Variables.Create("str2", ExpressionTypes.ListOfStrings);
+            Variables.Create("str3", ExpressionTypes.ListOfStrings);
+
             var t1 = new LogicalConstant() { Value = true };
             var f1 = new LogicalConstant() { Value = false };
 

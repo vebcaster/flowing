@@ -10,6 +10,8 @@
                 ExpressionTypes.Number => new NumberExpressionSlot(expression),
                 ExpressionTypes.String => new StringExpressionSlot(expression),
                 ExpressionTypes.ListOfNumbers => new ListOfNumbersExpressionSlot(expression),
+                ExpressionTypes.ListOfStrings => new ListOfStringsExpressionSlot(expression),
+                ExpressionTypes.ListOfLogicals => new ListOfLogicalsExpressionSlot(expression),
                 ExpressionTypes.NotSet => new NotSetExpressionSlot(expression),
                 _ => throw new Exception($"ExpressionSlotFactory cannot handle type {expression.Type}.")
             };

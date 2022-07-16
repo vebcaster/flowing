@@ -17,6 +17,7 @@ namespace WinFlows.Expressions.Operators
                 "XOR" => new LogicalXorOperator(),
                 "NUMBERS_ARE_EQUAL" => new NumbersAreEqualOperator(),
                 "STRINGS_ARE_EQUAL" => new StringsAreEqualOperator(),
+                "LOGICAL_ELEMENT_OF_LIST" => new LogicalElementOfListOperator(),
 
                 // Numbers
                 "PLUS" => new NumberAddOperator(),
@@ -31,6 +32,7 @@ namespace WinFlows.Expressions.Operators
 
                 // Strings
                 "CONCAT" => new StringConcatenateOperator(),
+                "STRING_ELEMENT_OF_LIST" => new StringElementOfListOperator(),
 
                 // What is this?
                 _ => throw new NotImplementedException($"OperatorFactory cannot build {op}")

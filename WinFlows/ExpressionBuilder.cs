@@ -85,6 +85,12 @@ namespace WinFlows
                         case ExpressionTypes.ListOfNumbers:
                             drgVar = new DragListOfNumbersVariable(name);
                             break;
+                        case ExpressionTypes.ListOfStrings:
+                            drgVar = new DragListOfStringsVariable(name);
+                            break;
+                        case ExpressionTypes.ListOfLogicals:
+                            drgVar = new DragListOfLogicalsVariable(name);
+                            break;
                         default:
                             var err = $"ExpressionBuilder cannot show {var.Type} variables.";
                             MessageBox.Show(err);

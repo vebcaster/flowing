@@ -48,6 +48,8 @@
             this.dragStringOperator1 = new WinFlows.Draggables.Operators.DragStringOperator();
             this.dragLogicalOperator6 = new WinFlows.Draggables.Operators.DragLogicalOperator();
             this.dragNumberOperator9 = new WinFlows.Draggables.Operators.DragNumberOperator();
+            this.dragStringOperator2 = new WinFlows.Draggables.Operators.DragStringOperator();
+            this.dragLogicalOperator7 = new WinFlows.Draggables.Operators.DragLogicalOperator();
             this.variablesPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -224,7 +226,7 @@
             // dragStringOperator1
             // 
             this.dragStringOperator1.DisplayText = "CONCAT";
-            this.dragStringOperator1.Location = new System.Drawing.Point(268, 321);
+            this.dragStringOperator1.Location = new System.Drawing.Point(268, 272);
             this.dragStringOperator1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dragStringOperator1.Name = "dragStringOperator1";
             this.dragStringOperator1.Size = new System.Drawing.Size(143, 41);
@@ -244,12 +246,32 @@
             // dragNumberOperator9
             // 
             this.dragNumberOperator9.DisplayText = "ELEMENT OF LIST";
-            this.dragNumberOperator9.Location = new System.Drawing.Point(268, 272);
+            this.dragNumberOperator9.Location = new System.Drawing.Point(715, 223);
             this.dragNumberOperator9.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dragNumberOperator9.Name = "dragNumberOperator9";
             this.dragNumberOperator9.NumberOperation = "NUMBER_ELEMENT_OF_LIST";
             this.dragNumberOperator9.Size = new System.Drawing.Size(143, 41);
             this.dragNumberOperator9.TabIndex = 21;
+            // 
+            // dragStringOperator2
+            // 
+            this.dragStringOperator2.DisplayText = "ELEMENT OF LIST";
+            this.dragStringOperator2.Location = new System.Drawing.Point(417, 272);
+            this.dragStringOperator2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.dragStringOperator2.Name = "dragStringOperator2";
+            this.dragStringOperator2.Size = new System.Drawing.Size(143, 41);
+            this.dragStringOperator2.StringOperation = "STRING_ELEMENT_OF_LIST";
+            this.dragStringOperator2.TabIndex = 22;
+            // 
+            // dragLogicalOperator7
+            // 
+            this.dragLogicalOperator7.DisplayText = "ELEMENT OF LIST";
+            this.dragLogicalOperator7.Location = new System.Drawing.Point(566, 125);
+            this.dragLogicalOperator7.LogicalOperation = "LOGICAL_ELEMENT_OF_LIST";
+            this.dragLogicalOperator7.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.dragLogicalOperator7.Name = "dragLogicalOperator7";
+            this.dragLogicalOperator7.Size = new System.Drawing.Size(143, 41);
+            this.dragLogicalOperator7.TabIndex = 23;
             // 
             // ExpressionBuilder
             // 
@@ -257,6 +279,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1019, 561);
+            this.Controls.Add(this.dragLogicalOperator7);
+            this.Controls.Add(this.dragStringOperator2);
             this.Controls.Add(this.dragNumberOperator9);
             this.Controls.Add(this.dragLogicalOperator6);
             this.Controls.Add(this.dragStringOperator1);
@@ -307,5 +331,7 @@
         private Draggables.Operators.DragStringOperator dragStringOperator1;
         private Draggables.Operators.DragLogicalOperator dragLogicalOperator6;
         private Draggables.Operators.DragNumberOperator dragNumberOperator9;
+        private Draggables.Operators.DragStringOperator dragStringOperator2;
+        private Draggables.Operators.DragLogicalOperator dragLogicalOperator7;
     }
 }

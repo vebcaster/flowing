@@ -1,6 +1,4 @@
-﻿Lists of strings and booleans
-Assign to strings and booleans
-Fix the Zoom out bug
+﻿Fix the Zoom out bug
 Stop program from running
 Prevent program from running if it is already running
 Double-click constant in ExpressionBuilder brings up the dialog pre-populated
@@ -20,3 +18,4 @@ Nicer color scheme
 Draggable pictures instead of the standard cursor
 Random floating blocks in Expression builder (temporary / buffer etc)
 Refactor Save and Load (JSON ?)
+Validate variable names (do not allow special chars etc)

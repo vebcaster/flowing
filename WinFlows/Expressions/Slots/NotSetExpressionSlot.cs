@@ -1,6 +1,8 @@
 ﻿using WinFlows.Expressions.Constants;
 using WinFlows.Expressions.Operators;
+using WinFlows.Expressions.Operators.Logical;
 using WinFlows.Expressions.Operators.Number;
+using WinFlows.Expressions.Operators.String;
 using WinFlows.Expressions.Variables;
 using WinFlows.Expressions.Variables.Lists;
 using WinFlows.Helpers;
@@ -103,14 +105,14 @@ namespace WinFlows.Expressions.Slots
             switch (newType)
             {
                 case ExpressionTypes.Logical:
-                    MessageBox.Show("Later 1");
-                    throw new NotImplementedException("Later");
+                    newAssignmentOperator = new LogicalAssignmentOperator();
+                    break;
                 case ExpressionTypes.Number:
                     newAssignmentOperator = new NumberAssignmentOperator();
                     break;
                 case ExpressionTypes.String:
-                    MessageBox.Show("Later 2");
-                    throw new NotImplementedException("Later");
+                    newAssignmentOperator = new StringAssignmentOperator();
+                    break;
                 default:
                     var err = "Dropped data invalid. Should be either left or right side of the assignment operator.";
                     MessageBox.Show(err);

@@ -5,14 +5,14 @@ using WinFlows.Helpers;
 
 namespace WinFlows.Expressions.Slots
 {
-    public partial class ListOfNumbersExpressionSlot : ExpressionSlot
+    public partial class ListOfStringsExpressionSlot : ExpressionSlot
     {
-        public ListOfNumbersExpressionSlot(Expression expression)
+        public ListOfStringsExpressionSlot(Expression expression)
             : base(expression)
         {
-            if (expression.Type != ExpressionTypes.ListOfNumbers)
+            if (expression.Type != ExpressionTypes.ListOfStrings)
             {
-                var err = "Expression should be list of numbers here.";
+                var err = "Expression should be list of strings here.";
                 MessageBox.Show(err);
                 throw new ArgumentException(err);
             }
@@ -26,7 +26,7 @@ namespace WinFlows.Expressions.Slots
                 return false;
 
             return
-                type.Equals("LIST_OF_NUMBERS")
+                type.Equals("LIST_OF_STRINGS")
                 &&
                 (
                     kind.Equals("VARIABLE")
@@ -37,15 +37,15 @@ namespace WinFlows.Expressions.Slots
 
         public override void Repaint(Graphics g)
         {
-            var pen = new Pen(ColorScheme.NumberStroke, Globals.SlotStroke);
-            var brush = new SolidBrush(_isHighlighted ? ColorScheme.ExpressionHighlight : ColorScheme.NumberFill);
+            var pen = new Pen(ColorScheme.StringStroke, Globals.SlotStroke);
+            var brush = new SolidBrush(_isHighlighted ? ColorScheme.ExpressionHighlight : ColorScheme.StringFill);
 
             ShapeHelper.DrawList(g, ClientRectangle, pen, brush);
 
             if (Expression is Constant || Expression is Variable)
-                StringHelper.DrawStringInsideBox(g, ClientRectangle, ColorScheme.NumberText, Expression.ToString());
+                StringHelper.DrawStringInsideBox(g, ClientRectangle, ColorScheme.StringText, Expression.ToString());
             else if (Expression is Operator)
-                OperatorSlotHelper.WriteOperatorTexts(g, this, ColorScheme.NumberText);
+                OperatorSlotHelper.WriteOperatorTexts(g, this, ColorScheme.StringText);
         }
     }
 }

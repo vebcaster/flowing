@@ -12,7 +12,7 @@
 
         public virtual string Save(int indent)
         {
-            MessageBox.Show("Cannot save Expression");
+            MessageBox.Show("Cannot save base Expression. Override Save in derived expressions.");
             return "EXPRESSION:NOT_SAVED";
         }
     }

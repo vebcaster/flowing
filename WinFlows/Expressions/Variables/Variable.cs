@@ -31,6 +31,10 @@ namespace WinFlows.Expressions.Variables
                     return new StringVariable(name);
                 case ExpressionTypes.ListOfNumbers:
                     return new ListOfNumbers(name);
+                case ExpressionTypes.ListOfStrings:
+                    return new ListOfStrings(name);
+                case ExpressionTypes.ListOfLogicals:
+                    return new ListOfLogicals(name);
                 default:
                     MessageBox.Show($"Variables of type {type} are not supported yet. Making a string instead.");
                     return new StringVariable(name);
