@@ -574,7 +574,9 @@ namespace WinFlows
                     case "EAST_INPUT":
                         ((LoopFlowConnector)block).EastInput = (Connector)otherBlock;
                         break;
-                    // TODO: WHILE BLOCK LOOP FLOW CONNECTOR    case "?"
+                    case "LOOP_FLOW_CONNECTOR":
+                        ((WhileBlock)block).LoopFlowConnector = (LoopFlowConnector)otherBlock;
+                        break;
                     default:
                         continue;
                 }
@@ -626,6 +628,7 @@ namespace WinFlows
                         case "FROM":
                         case "MERGE_PARENT":
                         case "MERGE_CONNECTOR":
+                        case "LOOP_FLOW_CONNECTOR":
                         case "EAST_INPUT":
                             // TODO: WHILE BLOCK LOOP FLOW CONNECTOR    case "?"
                             continue;
@@ -648,6 +651,8 @@ namespace WinFlows
                             var expression = LoadExpressionFromLines(expressionLines, 0);
                             if (firstPart.Equals("EXPRESSION") && block is IfBlock)
                                 ((IfBlock)block).Expression = expression;
+                            else if (firstPart.Equals("EXPRESSION") && block is WhileBlock)
+                                ((WhileBlock)block).Expression = expression;
                             else if (firstPart.Equals("ASSIGNMENT") && block is AssignBlock)
                                 ((AssignBlock)block).AssignmentOperator = (AssignmentOperator)expression;
                             else

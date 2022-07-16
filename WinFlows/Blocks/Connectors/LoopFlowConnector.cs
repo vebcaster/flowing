@@ -6,6 +6,13 @@ namespace WinFlows.Blocks.Connectors
     {
         public Connector EastInput { get; set; }
 
+        public LoopFlowConnector()
+        {
+            InitializeComponent();
+
+            EastInput = null!;
+        }
+
         public LoopFlowConnector(Connector eastInput)
         {
             InitializeComponent();
@@ -38,7 +45,7 @@ namespace WinFlows.Blocks.Connectors
 
         public override string Save()
         {
-            var sb = new StringBuilder();
+            var sb = new StringBuilder(base.Save());
             
             sb.AppendLine($"EAST_INPUT:{EastInput.Id}");
 

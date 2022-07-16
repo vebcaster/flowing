@@ -1,5 +1,4 @@
-﻿While block
-Output a constant string, not just a variable
+﻿Output a constant string, not just a variable
 Lists of strings and booleans
 Tooltips on blocks
 Fix the Zoom out bug
@@ -18,3 +17,6 @@ Pictures on buttons on MainForm
 Default values for variables
 Remember last program between restarts
 Refactor Save and Load (JSON ?)
+Stop program from running
+Prevent program from running if it is already running
+Assign to strings and booleans

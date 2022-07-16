@@ -1,4 +1,7 @@
-﻿using WinFlows.Blocks.Connectors;
+﻿using System.Text;
+using WinFlows.Blocks.Connectors;
+using WinFlows.Expressions;
+using WinFlows.Expressions.Constants;
 using WinFlows.Helpers;
 
 namespace WinFlows.Blocks
@@ -6,6 +9,7 @@ namespace WinFlows.Blocks
     public partial class WhileBlock : Block
     {
         public LoopFlowConnector LoopFlowConnector { get; set; }
+        public Expression Expression { private get; set; }
 
         public override int SouthOffset
         {
@@ -18,11 +22,20 @@ namespace WinFlows.Blocks
             }
         }
 
+        public WhileBlock()
+        {
+            InitializeComponent();
+
+            LoopFlowConnector = null!;
+            Expression = new LogicalConstant();
+        }
+
         public WhileBlock(LoopFlowConnector loopFlowConnector)
         {
             InitializeComponent();
 
             LoopFlowConnector = loopFlowConnector;
+            Expression = new LogicalConstant();
         }
 
         public override void Repaint(Graphics g)
@@ -57,12 +70,45 @@ namespace WinFlows.Blocks
                 ColorScheme.IfNoText,
                 "N");
 
+            StringHelper.DrawStringInsideBox(g, rect, ColorScheme.IfText, Expression.ToString() + "?");
+        }
+
+        public override void DoubleClicked()
+        {
+            using var eb = new ExpressionBuilder(Expression);
+            if (eb.ShowDialog(this) == DialogResult.OK)
+            {
+                Expression = eb.Expression;
+                Invalidate();
+            }
+        }
+
+        public override Block? Execute()
+        {
+            var result = Expression.Evaluate();
+            if (result is not bool)
+            {
+                var err = $"Expressions in WHILE blocks should evaluate to BOOL, not {result.GetType()}";
+                MessageBox.Show(err);
+                throw new InvalidOperationException(err);
+            }
+
+            if ((bool)result)
+                return East;
+            else
+                return South;
         }
 
         public override string Save()
         {
-            MessageBox.Show("While Blocks cannot be saved");
-            throw new NotImplementedException("While blocks cannot be saved");
+            var sb = new StringBuilder(base.Save());
+
+            var expression = Expression.Save(0);
+            sb.AppendLine($"LOOP_FLOW_CONNECTOR:{LoopFlowConnector.Id}");
+            sb.AppendLine($"EXPRESSION:");
+            sb.AppendLine(expression);
+
+            return sb.ToString();
         }
     }
 }
