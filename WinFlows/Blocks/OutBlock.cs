@@ -1,16 +1,18 @@
 ﻿using System.Text;
-using WinFlows.Expressions.Variables;
+using WinFlows.Expressions;
+using WinFlows.Expressions.Constants;
 using WinFlows.Helpers;
 
 namespace WinFlows.Blocks
 {
     public partial class OutBlock : Block
     {
-        public string? VariableName { private get; set; }
+        public Expression Expression{ private get; set; }
 
         public OutBlock()
         {
             InitializeComponent();
+            Expression = new StringConstant("Hello, World!");
         }
 
         public override void Repaint(Graphics g)
@@ -28,39 +30,24 @@ namespace WinFlows.Blocks
 
             g.FillPolygon(brush, points);
             g.DrawPolygon(pen, points);
-            if (string.IsNullOrWhiteSpace(VariableName))
-                StringHelper.DrawStringInsideBox(g, Globals.BlockRectTwoThirds, ColorScheme.StartText, "OUTPUT");
-            else
-                StringHelper.DrawStringInsideBox(g, rect, ColorScheme.StartText, $"\u2190{VariableName}");
+            StringHelper.DrawStringInsideBox(g, rect, ColorScheme.StartText, Expression.ToString());
         }
 
         public override void DoubleClicked()
         {
-            var variableNames = Variables.Names.Where(v => !Variables.Get(v).Type.ToString().ToLower().Contains("list")).ToList();
-
-            if (!variableNames.Any())
+            using var eb = new ExpressionBuilder(Expression);
+            if (eb.ShowDialog(this) == DialogResult.OK)
             {
-                MessageBox.Show("There are no variables to read. Create some variables first.");
-                return;
-            }
-
-            using var combo = new OptionCombo(variableNames, "Which variable to write?", VariableName);
-            combo.ShowDialog(this);
-            if (combo.DialogResult == DialogResult.OK)
-            {
-                VariableName = combo.SelectedItem;
+                Expression = eb.Expression;
                 Invalidate();
             }
         }
 
         public override Block? Execute()
         {
-            if (string.IsNullOrEmpty(VariableName))
-                MainForm.ConsoleWrite("ERROR: Nothing to write");
-            else if (!Variables.Exists(VariableName))
-                MainForm.ConsoleWrite($"ERROR: Variable {VariableName} no longer exists");
-            else
-                MainForm.ConsoleWrite(Variables.Get(VariableName).Evaluate().ToString());
+            var result = (string)Expression.Evaluate();
+            MainForm.ConsoleWrite(result);
+            
             return South;
         }
 
@@ -68,7 +55,9 @@ namespace WinFlows.Blocks
         {
             var sb = new StringBuilder(base.Save());
 
-            sb.AppendLine($"VARIABLE:{VariableName}");
+            var expression = Expression.Save(0);
+            sb.AppendLine($"EXPRESSION:");
+            sb.AppendLine(expression);
 
             return sb.ToString();
         }

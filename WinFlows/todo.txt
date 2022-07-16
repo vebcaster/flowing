@@ -1,5 +1,4 @@
-﻿Output a constant string, not just a variable
-Lists of strings and booleans
+﻿Lists of strings and booleans
 Tooltips on blocks
 Fix the Zoom out bug
 More string operations: compare, letter x of string
@@ -20,3 +19,4 @@ Refactor Save and Load (JSON ?)
 Stop program from running
 Prevent program from running if it is already running
 Assign to strings and booleans
+Double-click constant in ExpressionBuilder brings up the dialog pre-populated

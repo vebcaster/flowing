@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using WinFlows.Blocks;
 using WinFlows.Blocks.Connectors;
 using WinFlows.Expressions;
@@ -8,7 +7,6 @@ using WinFlows.Expressions.Operators;
 using WinFlows.Expressions.Operators.Logical;
 using WinFlows.Expressions.Variables;
 using WinFlows.Expressions.Variables.Lists;
-using WinFlows.Helpers;
 
 namespace WinFlows
 {
@@ -636,8 +634,6 @@ namespace WinFlows
                         case "VARIABLE":
                             if (block is InBlock)
                                 ((InBlock)block).VariableName = secondPart;
-                            else if (block is OutBlock)
-                                ((OutBlock)block).VariableName = secondPart;
                             else
                             {
                                 var err = $"Unexpected VARIABLE: in {block.GetType()}";
@@ -653,6 +649,8 @@ namespace WinFlows
                                 ((IfBlock)block).Expression = expression;
                             else if (firstPart.Equals("EXPRESSION") && block is WhileBlock)
                                 ((WhileBlock)block).Expression = expression;
+                            else if (firstPart.Equals("EXPRESSION") && block is OutBlock)
+                                ((OutBlock)block).Expression = expression;
                             else if (firstPart.Equals("ASSIGNMENT") && block is AssignBlock)
                                 ((AssignBlock)block).AssignmentOperator = (AssignmentOperator)expression;
                             else
