@@ -1,5 +1,4 @@
-﻿Fix the Zoom out bug
-Stop program from running
+﻿Stop program from running
 Prevent program from running if it is already running
 Double-click constant in ExpressionBuilder brings up the dialog pre-populated
 More string operations: compare, letter x of string
@@ -19,3 +18,5 @@ Draggable pictures instead of the standard cursor
 Random floating blocks in Expression builder (temporary / buffer etc)
 Refactor Save and Load (JSON ?)
 Validate variable names (do not allow special chars etc)
+Zoom out Expression Builder
+Zoom in and out where the mouse is

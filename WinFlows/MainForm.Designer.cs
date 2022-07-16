@@ -43,6 +43,8 @@
             this.btnVariables = new System.Windows.Forms.Button();
             this.console = new System.Windows.Forms.TextBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.speedBar = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -51,6 +53,7 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.speedBar)).BeginInit();
             this.SuspendLayout();
             // 
             // flowChart
@@ -63,8 +66,9 @@
             this.flowChart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowChart.Location = new System.Drawing.Point(0, 0);
             this.flowChart.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.flowChart.MinimumSize = new System.Drawing.Size(100, 100);
             this.flowChart.Name = "flowChart";
-            this.flowChart.Size = new System.Drawing.Size(635, 465);
+            this.flowChart.Size = new System.Drawing.Size(819, 462);
             this.flowChart.TabIndex = 0;
             // 
             // splitContainer1
@@ -82,8 +86,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.flowChart);
-            this.splitContainer1.Size = new System.Drawing.Size(635, 648);
-            this.splitContainer1.SplitterDistance = 178;
+            this.splitContainer1.Size = new System.Drawing.Size(819, 715);
+            this.splitContainer1.SplitterDistance = 248;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -97,6 +101,8 @@
             // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.splitContainer2.Panel1.Controls.Add(this.speedBar);
+            this.splitContainer2.Panel1.Controls.Add(this.label1);
             this.splitContainer2.Panel1.Controls.Add(this.btnLoad);
             this.splitContainer2.Panel1.Controls.Add(this.btnSave);
             this.splitContainer2.Panel1.Controls.Add(this.dragAssignBlock1);
@@ -111,8 +117,8 @@
             // 
             this.splitContainer2.Panel2.BackColor = System.Drawing.Color.Silver;
             this.splitContainer2.Panel2.Controls.Add(this.console);
-            this.splitContainer2.Size = new System.Drawing.Size(635, 178);
-            this.splitContainer2.SplitterDistance = 267;
+            this.splitContainer2.Size = new System.Drawing.Size(819, 248);
+            this.splitContainer2.SplitterDistance = 344;
             this.splitContainer2.SplitterWidth = 5;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -217,15 +223,34 @@
             this.console.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.console.Multiline = true;
             this.console.Name = "console";
-            this.console.Size = new System.Drawing.Size(363, 178);
+            this.console.Size = new System.Drawing.Size(470, 248);
             this.console.TabIndex = 0;
             this.console.Text = "CONSOLE";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(15, 166);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(54, 20);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Speed:";
+            // 
+            // speedBar
+            // 
+            this.speedBar.Location = new System.Drawing.Point(86, 166);
+            this.speedBar.Maximum = 5;
+            this.speedBar.Name = "speedBar";
+            this.speedBar.Size = new System.Drawing.Size(146, 56);
+            this.speedBar.TabIndex = 10;
+            this.speedBar.Value = 3;
+            this.speedBar.Scroll += new System.EventHandler(this.speedBar_Scroll);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(635, 648);
+            this.ClientSize = new System.Drawing.Size(819, 715);
             this.Controls.Add(this.splitContainer1);
             this.Name = "MainForm";
             this.Text = "WinFlows";
@@ -235,10 +260,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.speedBar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -259,5 +286,7 @@
         private Draggables.Blocks.DragAssignBlock dragAssignBlock1;
         private Button btnLoad;
         private Button btnSave;
+        private Label label1;
+        private TrackBar speedBar;
     }
 }

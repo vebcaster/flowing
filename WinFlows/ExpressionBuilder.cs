@@ -11,20 +11,18 @@ namespace WinFlows
         public Expression Expression { get; set; }
         public ExpressionSlot MainSlot;
         private int _mainSlotTop = 0;
-        private int _mainSlotLeft = 0;
 
         public ExpressionBuilder(Expression expression)
         {
             InitializeComponent();
 
-            foreach (var child in Controls)
+            foreach (var child in splitContainer.Panel2.Controls)
                 if (child is Draggable)
                 {
                     var drg = (Draggable)child;
                     if (_mainSlotTop < drg.Bottom + 30)
                         _mainSlotTop = drg.Bottom + 30;
                 }
-            _mainSlotLeft = variablesPanel.Right + 30;
 
             Expression = expression;
             UpdateData();
@@ -40,12 +38,12 @@ namespace WinFlows
             if (modelToView)
             {
                 if (MainSlot != null)
-                    Controls.Remove(MainSlot);
+                    splitContainer.Panel2.Controls.Remove(MainSlot);
 
                 MainSlot = ExpressionSlotFactory.Create(Expression);
-                MainSlot.Location = new Point(_mainSlotLeft, _mainSlotTop);
+                MainSlot.Location = new Point(30, _mainSlotTop);
 
-                Controls.Add(MainSlot);
+                splitContainer.Panel2.Controls.Add(MainSlot);
                 MainSlot.RecalculateChildDepth();
                 MainSlot.RepositionElements();
             }

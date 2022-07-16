@@ -8,6 +8,7 @@ namespace WinFlows
         {
             InitializeComponent();
             _console = console;
+            speedBar_Scroll(0, EventArgs.Empty);
         }
 
         public static void ConsoleWrite(string? s)
@@ -38,7 +39,7 @@ namespace WinFlows
 
             using var sfd = new SaveFileDialog();
             sfd.Filter = "Flowing files (*.flowing)|*.flowing|All files (*.*)|*.*";
-            
+
             if (sfd.ShowDialog(this) == DialogResult.OK)
                 File.WriteAllText(sfd.FileName, s);
         }
@@ -55,6 +56,20 @@ namespace WinFlows
 
             s = File.ReadAllText(ofd.FileName);
             flowChart.LoadFromString(s);
+        }
+
+        private void speedBar_Scroll(object sender, EventArgs e)
+        {
+            Globals.Delay = speedBar.Value switch
+            {
+                5 => 0,
+                4 => 125,
+                3 => 250,
+                2 => 500,
+                1 => 1000,
+                0 => 2000,
+                _ => throw new ArgumentOutOfRangeException($"Speed {speedBar.Value} is not valid.")
+            };
         }
     }
 }

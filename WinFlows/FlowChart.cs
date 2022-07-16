@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Runtime.InteropServices;
+using System.Text;
 using WinFlows.Blocks;
 using WinFlows.Blocks.Connectors;
 using WinFlows.Expressions;
@@ -52,17 +53,6 @@ namespace WinFlows
             }
         }
 
-        private int Delay => speedBar.Value switch
-        {
-            0 => 0,
-            1 => 125,
-            2 => 250,
-            3 => 500,
-            4 => 1000,
-            5 => 2000,
-            _ => throw new ArgumentOutOfRangeException($"Speed {speedBar.Value} is not valid.")
-        };
-
         public FlowChart()
         {
             InitializeComponent();
@@ -78,6 +68,43 @@ namespace WinFlows
             ResizeCurrentBlockMarkers();
 
             Reset();
+        }
+
+        // TODO: Move to its own place
+        [StructLayout(LayoutKind.Explicit)]
+        private struct ByteSplitter
+        {
+            [FieldOffset(0)]
+            public long TheLong;
+
+            [FieldOffset(2)]
+            public short TheShortAtPos2;
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == 0x20a     // WM_MOUSEWHEEL
+                    && ((long)m.WParam & 0x0008) == 0x0008)    // MK_CONTROL
+            {
+                // Decode wParam and lParam
+                ByteSplitter byteSplitter = new ByteSplitter();
+                byteSplitter.TheLong = (long)m.WParam;
+
+                int delta = byteSplitter.TheShortAtPos2;
+                
+                int x = (int)((long)m.LParam & 0x0000FFFF);
+                int y = (int)((long)m.LParam >> 16);
+
+                // Do the zoom
+                if (delta > 0)
+                    Globals.ZoomIn(x, y);
+                else if (delta < 0)
+                    Globals.ZoomOut(x, y);
+
+                return;     // Handled. Do not scroll.
+            }
+
+            base.WndProc(ref m);
         }
 
         public void Reset()
@@ -466,9 +493,9 @@ namespace WinFlows
 
             while (CurrentBlock != null)
             {
-                await Task.Delay(Delay);
+                await Task.Delay(Globals.Delay);
                 CurrentBlock = CurrentBlock.Execute();
-                await Task.Delay(Delay);
+                await Task.Delay(Globals.Delay);
             }
         }
 
@@ -520,11 +547,6 @@ namespace WinFlows
                     block.BringToFront();
                 }
             }
-        }
-
-        private void zoomBar_Scroll(object sender, EventArgs e)
-        {
-            Globals.ZoomFactor = zoomBar.Value / 100.0f;
         }
 
         private Rectangle GetMarkerRectAroundBlock(Block block)
