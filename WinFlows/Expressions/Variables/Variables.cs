@@ -24,15 +24,33 @@
             return _variables.ContainsKey(name);
         }
 
-        public static void Create(string name, ExpressionTypes type)
+        public static bool Create(string name, ExpressionTypes type)
         {
             if (Exists(name))
             {
                 MessageBox.Show($"A variable named {name} already exists.");
-                return;
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(name) || !IsValidVariableName(name))
+            {
+                MessageBox.Show($"\"{name}\" is not a valid variable name.");
+                return false;
             }
 
             _variables.Add(name, Variable.Create(type, name));
+            return true;
+        }
+
+        private static bool IsValidVariableName(string name)
+        {
+            if (!(name.StartsWith("_") || (char.IsLetter(name[0]) && char.IsAscii(name[0]))))
+                return false;
+
+            foreach (char c in name)
+                if (!(char.IsAscii(c) && (char.IsLetterOrDigit(c) || c.Equals('_'))))
+                    return false;
+
+            return true;
         }
 
         public static void Clear()

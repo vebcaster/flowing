@@ -1,22 +1,21 @@
-﻿Stop program from running
+﻿More number operations: compare
+Stop program from running
 Prevent program from running if it is already running
-Double-click constant in ExpressionBuilder brings up the dialog pre-populated
-More string operations: compare, letter x of string
-More number operations: compare
-Default values for variables
-DrawStringInsideBox helper write on multiple lines
-Tooltips on blocks
-Pictures on buttons on MainForm
 Make a copy of Expression and use it when firing up Builder
 Make a copy of the whole program, use it when loading
 Undo in flow chart
 Undo in expression builder
+Double-click constant in ExpressionBuilder brings up the dialog pre-populated
+Default values for variables
+More string operations: compare, letter x of string
+DrawStringInsideBox helper write on multiple lines
+Tooltips on blocks
+Pictures on buttons on MainForm
 Remember last program between restarts
 Rounded corners on blocks and draggables
 Nicer color scheme
 Draggable pictures instead of the standard cursor
 Random floating blocks in Expression builder (temporary / buffer etc)
 Refactor Save and Load (JSON ?)
-Validate variable names (do not allow special chars etc)
 Zoom out Expression Builder
 Zoom in and out where the mouse is

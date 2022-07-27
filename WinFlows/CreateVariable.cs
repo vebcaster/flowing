@@ -46,15 +46,13 @@ namespace WinFlows
             }
 
             name = txtName.Text.Trim();
-            if (Variables.Exists(name))
+
+            if (!Variables.Create(name, type))
             {
-                MessageBox.Show("A variable with this name already exists. Please choose a different name.", "Action required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtName.SelectAll();
                 txtName.Select();
                 return;
             }
-
-            Variables.Create(name, type);
             DialogResult = DialogResult.OK;
         }
     }

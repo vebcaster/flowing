@@ -9,6 +9,12 @@
         {
         }
 
+        public override object Evaluate()
+        {
+            var count = _array == null ? 0 : _array.Length;
+            return $"Contains {count} elements.";
+        }
+
         public override void Set(object val)
         {
             var err = "Calling Set() on lists is not allowed.";
