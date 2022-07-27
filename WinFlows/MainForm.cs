@@ -30,7 +30,8 @@ namespace WinFlows
 
         private void btnExecute_Click(object sender, EventArgs e)
         {
-            FlowChart.Instance.Execute();
+            if (!FlowChart.Instance.IsRunning)
+                FlowChart.Instance.Execute();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -70,6 +71,19 @@ namespace WinFlows
                 0 => 2000,
                 _ => throw new ArgumentOutOfRangeException($"Speed {speedBar.Value} is not valid.")
             };
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (FlowChart.Instance.IsRunning)
+                    FlowChart.Instance.Stop();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

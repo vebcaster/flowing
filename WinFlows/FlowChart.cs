@@ -42,6 +42,8 @@ namespace WinFlows
         private Block EndBlock { get; set; } = null!;
         private Control[] _currentBlockMarkers = new Control[4];
         private Block? _currentBlock = null;
+        public bool IsRunning { get => _currentBlock != null; }
+        private bool _stopRequested = false;
         private Block? CurrentBlock
         {
             get => _currentBlock;
@@ -488,15 +490,40 @@ namespace WinFlows
 
         public async void Execute()
         {
-            if (CurrentBlock == null)
-                CurrentBlock = StartBlock;
+            if (CurrentBlock != null)
+                throw new InvalidOperationException("The program is already running.");
+
+            CurrentBlock = StartBlock;
 
             while (CurrentBlock != null)
             {
+                if (_stopRequested)
+                    break;
+
                 await Task.Delay(Globals.Delay);
+
+                if (_stopRequested)
+                    break;
+
                 CurrentBlock = CurrentBlock.Execute();
+
+                if (_stopRequested)
+                    break;
+
                 await Task.Delay(Globals.Delay);
+
+                if (_stopRequested)
+                    break;
             }
+            _stopRequested = false;
+            CurrentBlock = null;
+        }
+
+        public void Stop()
+        {
+            if (!IsRunning)
+                throw new InvalidOperationException("The program is not running.");
+            _stopRequested = true;
         }
 
         private void ResizeCurrentBlockMarkers()

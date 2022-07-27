@@ -1,6 +1,4 @@
-﻿Stop program from running
-Prevent program from running if it is already running
-Make a copy of Expression and use it when firing up Builder
+﻿Make a copy of Expression and use it when firing up Builder
 Make a copy of the whole program, use it when loading
 Undo in flow chart
 Undo in expression builder
@@ -18,3 +16,4 @@ Random floating blocks in Expression builder (temporary / buffer etc)
 Refactor Save and Load (JSON ?)
 Zoom out Expression Builder
 Zoom in and out where the mouse is
+Play/pause semi-debug mode

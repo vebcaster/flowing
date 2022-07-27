@@ -32,6 +32,8 @@
             this.flowChart = new WinFlows.FlowChart();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.speedBar = new System.Windows.Forms.TrackBar();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.dragAssignBlock1 = new WinFlows.Draggables.Blocks.DragAssignBlock();
@@ -43,8 +45,7 @@
             this.btnVariables = new System.Windows.Forms.Button();
             this.console = new System.Windows.Forms.TextBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.label1 = new System.Windows.Forms.Label();
-            this.speedBar = new System.Windows.Forms.TrackBar();
+            this.btnStop = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -68,7 +69,7 @@
             this.flowChart.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.flowChart.MinimumSize = new System.Drawing.Size(100, 100);
             this.flowChart.Name = "flowChart";
-            this.flowChart.Size = new System.Drawing.Size(819, 462);
+            this.flowChart.Size = new System.Drawing.Size(819, 463);
             this.flowChart.TabIndex = 0;
             // 
             // splitContainer1
@@ -87,7 +88,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.flowChart);
             this.splitContainer1.Size = new System.Drawing.Size(819, 715);
-            this.splitContainer1.SplitterDistance = 248;
+            this.splitContainer1.SplitterDistance = 247;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -101,6 +102,7 @@
             // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.splitContainer2.Panel1.Controls.Add(this.btnStop);
             this.splitContainer2.Panel1.Controls.Add(this.speedBar);
             this.splitContainer2.Panel1.Controls.Add(this.label1);
             this.splitContainer2.Panel1.Controls.Add(this.btnLoad);
@@ -117,32 +119,51 @@
             // 
             this.splitContainer2.Panel2.BackColor = System.Drawing.Color.Silver;
             this.splitContainer2.Panel2.Controls.Add(this.console);
-            this.splitContainer2.Size = new System.Drawing.Size(819, 248);
+            this.splitContainer2.Size = new System.Drawing.Size(819, 247);
             this.splitContainer2.SplitterDistance = 344;
             this.splitContainer2.SplitterWidth = 5;
             this.splitContainer2.TabIndex = 0;
             // 
+            // speedBar
+            // 
+            this.speedBar.Location = new System.Drawing.Point(86, 166);
+            this.speedBar.Maximum = 5;
+            this.speedBar.Name = "speedBar";
+            this.speedBar.Size = new System.Drawing.Size(146, 56);
+            this.speedBar.TabIndex = 10;
+            this.speedBar.Value = 3;
+            this.speedBar.Scroll += new System.EventHandler(this.speedBar_Scroll);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(15, 166);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(54, 20);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Speed:";
+            // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(175, 16);
+            this.btnLoad.Location = new System.Drawing.Point(210, 15);
             this.btnLoad.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(32, 31);
             this.btnLoad.TabIndex = 8;
             this.btnLoad.Text = "L";
-            this.toolTip.SetToolTip(this.btnLoad, "Run program / Next step");
+            this.toolTip.SetToolTip(this.btnLoad, "Load program");
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(119, 16);
+            this.btnSave.Location = new System.Drawing.Point(161, 15);
             this.btnSave.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(32, 31);
             this.btnSave.TabIndex = 7;
             this.btnSave.Text = "S";
-            this.toolTip.SetToolTip(this.btnSave, "Run program / Next step");
+            this.toolTip.SetToolTip(this.btnSave, "Save program");
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
@@ -184,7 +205,7 @@
             // 
             // btnExecute
             // 
-            this.btnExecute.Location = new System.Drawing.Point(66, 16);
+            this.btnExecute.Location = new System.Drawing.Point(63, 15);
             this.btnExecute.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Size = new System.Drawing.Size(32, 31);
@@ -205,7 +226,7 @@
             // 
             // btnVariables
             // 
-            this.btnVariables.Location = new System.Drawing.Point(14, 16);
+            this.btnVariables.Location = new System.Drawing.Point(14, 15);
             this.btnVariables.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnVariables.Name = "btnVariables";
             this.btnVariables.Size = new System.Drawing.Size(32, 31);
@@ -223,28 +244,21 @@
             this.console.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.console.Multiline = true;
             this.console.Name = "console";
-            this.console.Size = new System.Drawing.Size(470, 248);
+            this.console.Size = new System.Drawing.Size(470, 247);
             this.console.TabIndex = 0;
             this.console.Text = "CONSOLE";
             // 
-            // label1
+            // btnStop
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 166);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(54, 20);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Speed:";
-            // 
-            // speedBar
-            // 
-            this.speedBar.Location = new System.Drawing.Point(86, 166);
-            this.speedBar.Maximum = 5;
-            this.speedBar.Name = "speedBar";
-            this.speedBar.Size = new System.Drawing.Size(146, 56);
-            this.speedBar.TabIndex = 10;
-            this.speedBar.Value = 3;
-            this.speedBar.Scroll += new System.EventHandler(this.speedBar_Scroll);
+            this.btnStop.Location = new System.Drawing.Point(112, 15);
+            this.btnStop.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(32, 31);
+            this.btnStop.TabIndex = 11;
+            this.btnStop.Text = "S";
+            this.toolTip.SetToolTip(this.btnStop, "Stop program");
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // MainForm
             // 
@@ -288,5 +302,6 @@
         private Button btnSave;
         private Label label1;
         private TrackBar speedBar;
+        private Button btnStop;
     }
 }
