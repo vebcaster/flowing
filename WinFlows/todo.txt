@@ -1,5 +1,4 @@
-﻿More number operations: compare
-Stop program from running
+﻿Stop program from running
 Prevent program from running if it is already running
 Make a copy of Expression and use it when firing up Builder
 Make a copy of the whole program, use it when loading
