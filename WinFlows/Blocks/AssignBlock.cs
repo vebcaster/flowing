@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using WinFlows.Expressions;
 using WinFlows.Expressions.Operators;
 using WinFlows.Expressions.Variables;
 using WinFlows.Helpers;
@@ -47,13 +48,18 @@ namespace WinFlows.Blocks
                 return;
             }
 
+            var original = AssignmentOperator.Save(0);
+
             using var exprBuilder = new ExpressionBuilder(AssignmentOperator);
-            if (exprBuilder.ShowDialog(this) != DialogResult.OK)
-                return;
-
-            AssignmentOperator = (AssignmentOperator)exprBuilder.Expression;
-
-            Invalidate();
+            if (exprBuilder.ShowDialog(this) == DialogResult.OK)
+            {
+                AssignmentOperator = (AssignmentOperator)exprBuilder.Expression;
+                Invalidate();
+            }
+            else
+            {
+                AssignmentOperator = (AssignmentOperator)Expression.LoadExpressionFromLines(original.Split(Environment.NewLine), 0);
+            }
         }
 
         public override string Save()

@@ -1,5 +1,4 @@
-﻿Make a copy of Expression and use it when firing up Builder
-Make a copy of the whole program, use it when loading
+﻿Make a copy of the whole program, use it when loading
 Undo in flow chart
 Undo in expression builder
 Double-click constant in ExpressionBuilder brings up the dialog pre-populated
@@ -17,3 +16,4 @@ Refactor Save and Load (JSON ?)
 Zoom out Expression Builder
 Zoom in and out where the mouse is
 Play/pause semi-debug mode
+Ask Are you sure? when canceling modified builder or closing app with modified flowchart

@@ -830,7 +830,7 @@ namespace WinFlows
                         case "EXPRESSION":
                         case "ASSIGNMENT":
                             var expressionLines = lines[(i + 1)..];
-                            var expression = LoadExpressionFromLines(expressionLines, 0);
+                            var expression = Expression.LoadExpressionFromLines(expressionLines, 0);
                             if (firstPart.Equals("EXPRESSION") && block is IfBlock)
                                 ((IfBlock)block).Expression = expression;
                             else if (firstPart.Equals("EXPRESSION") && block is WhileBlock)
@@ -850,107 +850,6 @@ namespace WinFlows
                 }
 
             return block;
-        }
-
-        private Expression LoadExpressionFromLines(string[] expressionLines, int indent)
-        {
-            expressionLines = Trim(expressionLines);
-
-            if (!expressionLines[0].Trim().Equals($"EXPRESSIONLEVEL:{indent}:START"))
-            {
-                var err = $"Unexpected line {expressionLines[0]}. Was expecting EXPRESSIONLEVEL:{indent}:START";
-                MessageBox.Show(err);
-                throw new InvalidDataException(err);
-            }
-            if (!expressionLines[expressionLines.Length - 1].Trim().Equals($"EXPRESSIONLEVEL:{indent}:END"))
-            {
-                var err = $"Unexpected line {expressionLines[expressionLines.Length - 1]}. Was expecting EXPRESSIONLEVEL:{indent}:END";
-                MessageBox.Show(err);
-                throw new InvalidDataException(err);
-            }
-
-            expressionLines = expressionLines[1..(expressionLines.Length - 1)];
-
-            var index = expressionLines[0].IndexOf(":");
-            var first = expressionLines[0].Substring(0, index);
-            var second = expressionLines[0].Substring(index + 1);
-
-            return first.Trim() switch
-            {
-                "CONSTANT_LOGICAL" => new LogicalConstant(bool.Parse(second)),
-                "CONSTANT_NUMBER" => new NumberConstant(float.Parse(second)),
-                "CONSTANT_STRING" => new StringConstant(second),
-                "CONSTANT_NOT_SET" => new NotSetConstant(),
-                "VARIABLE" => Variables.Names.Contains(second)
-                                ? Variables.Get(second) :
-                                    second.Equals("Drag a list here")
-                                    ? new DummyListOfNumbers()
-                                    : new NotSetVariable(),
-                "OPERATOR" => LoadOperatorFromLines(expressionLines, indent),
-                _ => throw new ArgumentException($"{first} is not a valid start for an Expression")
-            };
-        }
-
-        private Operator LoadOperatorFromLines(string[] expressionLines, int indent)
-        {
-            expressionLines = Trim(expressionLines);
-
-            // OPERATOR:WinFlows.Expressions.Operators.Logical.LogicalAndOperator
-            if (!expressionLines[0].Trim().StartsWith("OPERATOR:"))
-            {
-                var err = $"Expected line to start with OPERATOR: but found {expressionLines[0]}";
-                MessageBox.Show(err);
-                throw new InvalidDataException(err);
-            }
-
-            var index = expressionLines[0].IndexOf(":");
-            var second = expressionLines[0].Substring(index + 1);
-
-            var op = (Operator)Activator.CreateInstance(Type.GetType(second));
-            expressionLines = expressionLines[1..];
-
-            for (int i = 0; i < op.Operands.Length; i++)
-            {
-                string[] operandLines;
-
-                if (!expressionLines[0].Trim().Equals($"OPERAND_NO:{i}"))
-                {
-                    var err = $"Unexpected {expressionLines[0]}. Was expecting OPERAND_NO:{i}";
-                    MessageBox.Show(err);
-                    throw new InvalidDataException(err);
-                }
-
-                if (i == op.Operands.Length - 1)
-                    op.Operands[i] = LoadExpressionFromLines(expressionLines[1..], indent + 1);
-                else
-                {
-                    var lookingFor = $"{string.Empty.PadLeft(indent * 2)}OPERAND_NO:{i + 1}";
-                    var j = 0;
-                    while (j < expressionLines.Length && !expressionLines[j].Equals(lookingFor))
-                        j++;
-                    if (j == expressionLines.Length)
-                    {
-                        var err = $"Did not find end of operand {i}";
-                        MessageBox.Show(err);
-                        throw new InvalidDataException(err);
-                    }
-                    op.Operands[i] = LoadExpressionFromLines(expressionLines[1..j], indent + 1);
-
-                    expressionLines = expressionLines[j..];
-                }
-            }
-
-            return op;
-        }
-
-        private string[] Trim(string[] expressionLines)
-        {
-            while (string.IsNullOrWhiteSpace(expressionLines[0]))
-                expressionLines = expressionLines[1..];
-            while (string.IsNullOrWhiteSpace(expressionLines[expressionLines.Length - 1]))
-                expressionLines = expressionLines[..(expressionLines.Length - 1)];
-
-            return expressionLines;
         }
     }
 }

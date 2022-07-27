@@ -35,11 +35,17 @@ namespace WinFlows.Blocks
 
         public override void DoubleClicked()
         {
+            var original = Expression.Save(0);
+
             using var eb = new ExpressionBuilder(Expression);
             if (eb.ShowDialog(this) == DialogResult.OK)
             {
                 Expression = eb.Expression;
                 Invalidate();
+            }
+            else
+            {
+                Expression = Expression.LoadExpressionFromLines(original.Split(Environment.NewLine), 0);
             }
         }
 
