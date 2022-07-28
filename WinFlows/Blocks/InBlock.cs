@@ -50,6 +50,7 @@ namespace WinFlows.Blocks
             {
                 VariableName = combo.SelectedItem;
                 Invalidate();
+                FlowChart.Instance.ProgramHasChanged();
             }
         }
 

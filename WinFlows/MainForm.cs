@@ -85,5 +85,23 @@ namespace WinFlows
                 MessageBox.Show(ex.Message);
             }
         }
+
+        public void SetUndoRedo(bool canUndo, bool canRedo)
+        {
+            btnUndo.Enabled = canUndo;
+            btnRedo.Enabled = canRedo;
+        }
+
+        private void btnUndo_Click(object sender, EventArgs e)
+        {
+            if (flowChart.CanUndo)
+                flowChart.Undo();
+        }
+
+        private void btnRedo_Click(object sender, EventArgs e)
+        {
+            if (flowChart.CanRedo)
+                flowChart.Redo();
+        }
     }
 }

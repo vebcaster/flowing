@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using WinFlows.Expressions;
+using WinFlows.Expressions.Constants;
 using WinFlows.Expressions.Operators;
 using WinFlows.Expressions.Variables;
 using WinFlows.Helpers;
@@ -32,7 +33,7 @@ namespace WinFlows.Blocks
             g.FillRectangle(brush, Globals.BlockRect);
             g.DrawRectangle(pen, Globals.BlockRect);
 
-            if (AssignmentOperator.Operands[0] is NotSetVariable)
+            if (AssignmentOperator.Operands[0] is NotSetVariable && AssignmentOperator.Operands[1] is NotSetConstant)
                 StringHelper.DrawStringInsideBox(g, Globals.BlockRectTwoThirds, ColorScheme.AssignText, "ASSIGN");
             else
                 StringHelper.DrawStringInsideBox(g, Globals.BlockRect, ColorScheme.AssignText, AssignmentOperator.ToString());
@@ -55,6 +56,7 @@ namespace WinFlows.Blocks
             {
                 AssignmentOperator = (AssignmentOperator)exprBuilder.Expression;
                 Invalidate();
+                FlowChart.Instance.ProgramHasChanged();
             }
             else
             {

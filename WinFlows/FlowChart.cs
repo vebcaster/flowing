@@ -54,6 +54,12 @@ namespace WinFlows
             }
         }
 
+        private string _stateBeforeChange;
+        private Stack<string> _undo = new Stack<string>();
+        private Stack<string> _redo = new Stack<string>();
+        public bool CanUndo { get => _undo.Count > 0; }
+        public bool CanRedo { get => _redo.Count > 0; }
+
         public FlowChart()
         {
             InitializeComponent();
@@ -166,7 +172,11 @@ namespace WinFlows
 
             ((IfBlock)x).Expression = le;
 
+            _stateBeforeChange = GetSaveString();
             Reposition();
+            _undo.Clear();
+            _redo.Clear();
+            UpdateMainFormUndoRedo();
         }
 
         public void DeleteBlock(Block block)
@@ -225,8 +235,7 @@ namespace WinFlows
                 blocksToRemove.Add(southConn);
 
             // Create the right type of connector
-            Connector newConn = null;
-
+            Connector newConn;
             if (northConn is DownConnector && southConn is DownConnector)
                 newConn = new DownConnector();
             else if (northConn is DownConnector && southConn is DownLeftConnector)
@@ -278,6 +287,7 @@ namespace WinFlows
                 Controls.Remove(b);
 
             Reposition();
+            ProgramHasChanged();
         }
 
         private void AddTree(Block startFrom, Block stopAt, List<Block> list)
@@ -609,6 +619,10 @@ namespace WinFlows
                 LoadVariables(s);
                 LoadBlocks(s);
                 Reposition();
+
+                _undo.Clear();
+                _redo.Clear();
+                UpdateMainFormUndoRedo();
             }
             catch (Exception ex)
             {
@@ -849,11 +863,68 @@ namespace WinFlows
                                 MessageBox.Show(err);
                                 throw new InvalidDataException(err);
                             }
+                            i = lines.Length;   // We are done, expression is the last bit in all blocks
                             break;
                     }
                 }
 
             return block;
+        }
+
+        public void Undo()
+        {
+            if (!CanUndo)
+            {
+                var err = "Cannot undo. Undo stack empty.";
+                MessageBox.Show(err);
+                throw new InvalidOperationException(err);
+            }
+
+            _redo.Push(_stateBeforeChange);
+
+            _stateBeforeChange = _undo.Pop();
+
+            LoadVariables(_stateBeforeChange);
+            LoadBlocks(_stateBeforeChange);
+            Reposition();
+
+            UpdateMainFormUndoRedo();
+        }
+
+        public void Redo()
+        {
+            if (!CanRedo)
+            {
+                var err = "Cannot redo. Redo stack empty.";
+                MessageBox.Show(err);
+                throw new InvalidOperationException(err);
+            }
+
+            _undo.Push(_stateBeforeChange);
+
+            _stateBeforeChange = _redo.Pop();
+
+            LoadVariables(_stateBeforeChange);
+            LoadBlocks(_stateBeforeChange);
+            Reposition();
+
+            UpdateMainFormUndoRedo();
+        }
+
+        public void ProgramHasChanged()
+        {
+            _undo.Push(_stateBeforeChange);
+            _stateBeforeChange = GetSaveString();
+            _redo.Clear();
+
+            UpdateMainFormUndoRedo();
+        }
+
+        private void UpdateMainFormUndoRedo()
+        {
+            var mainForm = (MainForm)FindForm();
+            if (mainForm != null)
+                mainForm.SetUndoRedo(CanUndo, CanRedo);
         }
     }
 }

@@ -72,6 +72,7 @@ namespace WinFlows.Blocks.Connectors
             Insert(newBlock1, newBlock2);
 
             FlowChart.Instance.Reposition();
+            FlowChart.Instance.ProgramHasChanged();
         }
 
         protected void DrawBendInTheMiddle(Graphics g, SidesFlags flags)

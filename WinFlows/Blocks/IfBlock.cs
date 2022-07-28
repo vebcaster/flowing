@@ -63,6 +63,7 @@ namespace WinFlows.Blocks
             {
                 Expression = eb.Expression;
                 Invalidate();
+                FlowChart.Instance.ProgramHasChanged();
             }
             else
             {
