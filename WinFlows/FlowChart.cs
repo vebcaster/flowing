@@ -7,7 +7,6 @@ using WinFlows.Expressions.Constants;
 using WinFlows.Expressions.Operators;
 using WinFlows.Expressions.Operators.Logical;
 using WinFlows.Expressions.Variables;
-using WinFlows.Expressions.Variables.Lists;
 
 namespace WinFlows
 {
@@ -603,9 +602,10 @@ namespace WinFlows
 
         public void LoadFromString(string s)
         {
+            // Make a copy of the existing program, just in case
+            var original = GetSaveString();
             try
             {
-                // TODO: make a copy of the existing program
                 LoadVariables(s);
                 LoadBlocks(s);
                 Reposition();
@@ -613,7 +613,11 @@ namespace WinFlows
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                // TODO: restore the original program
+
+                // Restore the original program
+                LoadVariables(original);
+                LoadBlocks(original);
+                Reposition();
             }
         }
 

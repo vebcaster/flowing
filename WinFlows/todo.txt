@@ -1,5 +1,4 @@
-﻿Make a copy of the whole program, use it when loading
-Undo in flow chart
+﻿Undo in flow chart
 Undo in expression builder
 Double-click constant in ExpressionBuilder brings up the dialog pre-populated
 Default values for variables
