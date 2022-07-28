@@ -55,7 +55,11 @@ namespace WinFlows.Expressions.Slots
         {
             float typedNumber;
 
-            using var optionString = new OptionString($"Input numerical value", string.Empty, false, true);
+            var current = 1.0f;
+            if (Expression is NumberConstant)
+                current = (float)Expression.Evaluate();
+
+            using var optionString = new OptionString($"Input numerical value", current.ToString(), false, true);
             if (optionString.ShowDialog(this) == DialogResult.OK)
             {
                 if (!float.TryParse(optionString.TypedText, out typedNumber))

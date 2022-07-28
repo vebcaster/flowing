@@ -72,11 +72,6 @@ namespace WinFlows.Expressions.Slots
                 OperatorSlotHelper.WriteOperatorTexts(g, this, ColorScheme.NotSetText);
         }
 
-        public override bool DoubleClicked()
-        {
-            return false;
-        }
-
         public override void Dropped(string? kind, string? type, string? what)
         {
             // Figure out on which operand this was dropped

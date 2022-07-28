@@ -1,6 +1,4 @@
-﻿Undo in flow chart
-Undo in expression builder
-Double-click constant in ExpressionBuilder brings up the dialog pre-populated
+﻿Undo in expression builder
 Default values for variables
 More string operations: compare, letter x of string
 DrawStringInsideBox helper write on multiple lines

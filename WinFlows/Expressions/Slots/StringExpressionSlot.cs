@@ -50,9 +50,11 @@ namespace WinFlows.Expressions.Slots
 
         public override bool DoubleClicked()
         {
-            string text = string.Empty;
+            var text = string.Empty;
+            if (Expression is StringConstant)
+                text = (string)Expression.Evaluate();
 
-            using var optionString = new OptionString($"Input text value", string.Empty, false, false);
+            using var optionString = new OptionString($"Input text value", text, true, false);
             if (optionString.ShowDialog(this) == DialogResult.OK)
             {
                 Expression = new StringConstant(optionString.TypedText);
