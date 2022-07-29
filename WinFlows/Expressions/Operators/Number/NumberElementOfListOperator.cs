@@ -14,9 +14,18 @@ namespace WinFlows.Expressions.Operators.Number
 
         public override object Evaluate()
         {
-            return (float)
-                ((ListOfNumbers)Operands[1])
-                [Convert.ToInt32(Operands[0].Evaluate())];
+            var index = Convert.ToInt32(Operands[0].Evaluate());
+            var list = (ListOfNumbers)Operands[1];
+
+            if (index >= list.Length)
+            {
+                var err = $"ERROR: Attempted to read element {index} of a list with {list.Length} elements. There is a bug in the program. Please fix. Returning zero.";
+                MessageBox.Show(err);
+                MainForm.ConsoleWrite(err);
+                return 0.0f;
+            }
+
+            return (float)list[index];
         }
     }
 }

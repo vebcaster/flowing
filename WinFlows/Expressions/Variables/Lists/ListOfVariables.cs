@@ -3,6 +3,7 @@
     public abstract class ListOfVariables : Variable
     {
         private object[] _array = new object[0];
+        public int Length => _array.Length;
 
         public ListOfVariables(ExpressionTypes type, string name)
             : base(type, name)
