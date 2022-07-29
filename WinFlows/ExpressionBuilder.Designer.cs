@@ -51,10 +51,11 @@
             this.dragStringOperator2 = new WinFlows.Draggables.Operators.DragStringOperator();
             this.dragLogicalOperator7 = new WinFlows.Draggables.Operators.DragLogicalOperator();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.dragLogicalOperator8 = new WinFlows.Draggables.Operators.DragLogicalOperator();
-            this.dragLogicalOperator9 = new WinFlows.Draggables.Operators.DragLogicalOperator();
-            this.dragLogicalOperator10 = new WinFlows.Draggables.Operators.DragLogicalOperator();
             this.dragLogicalOperator11 = new WinFlows.Draggables.Operators.DragLogicalOperator();
+            this.dragLogicalOperator10 = new WinFlows.Draggables.Operators.DragLogicalOperator();
+            this.dragLogicalOperator9 = new WinFlows.Draggables.Operators.DragLogicalOperator();
+            this.dragLogicalOperator8 = new WinFlows.Draggables.Operators.DragLogicalOperator();
+            this.dragStringOperator3 = new WinFlows.Draggables.Operators.DragStringOperator();
             this.variablesPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -265,7 +266,7 @@
             // dragStringOperator2
             // 
             this.dragStringOperator2.DisplayText = "ELEMENT OF LIST";
-            this.dragStringOperator2.Location = new System.Drawing.Point(162, 318);
+            this.dragStringOperator2.Location = new System.Drawing.Point(311, 318);
             this.dragStringOperator2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dragStringOperator2.Name = "dragStringOperator2";
             this.dragStringOperator2.Size = new System.Drawing.Size(143, 41);
@@ -296,6 +297,7 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.AutoScroll = true;
+            this.splitContainer.Panel2.Controls.Add(this.dragStringOperator3);
             this.splitContainer.Panel2.Controls.Add(this.dragLogicalOperator11);
             this.splitContainer.Panel2.Controls.Add(this.dragLogicalOperator10);
             this.splitContainer.Panel2.Controls.Add(this.dragLogicalOperator9);
@@ -324,25 +326,15 @@
             this.splitContainer.SplitterDistance = 236;
             this.splitContainer.TabIndex = 24;
             // 
-            // dragLogicalOperator8
+            // dragLogicalOperator11
             // 
-            this.dragLogicalOperator8.DisplayText = "N > N";
-            this.dragLogicalOperator8.Location = new System.Drawing.Point(609, 122);
-            this.dragLogicalOperator8.LogicalOperation = "NUMBERS_GREATER_THAN";
-            this.dragLogicalOperator8.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.dragLogicalOperator8.Name = "dragLogicalOperator8";
-            this.dragLogicalOperator8.Size = new System.Drawing.Size(143, 41);
-            this.dragLogicalOperator8.TabIndex = 24;
-            // 
-            // dragLogicalOperator9
-            // 
-            this.dragLogicalOperator9.DisplayText = "N >= N";
-            this.dragLogicalOperator9.Location = new System.Drawing.Point(460, 122);
-            this.dragLogicalOperator9.LogicalOperation = "NUMBERS_GREATER_OR_EQUAL";
-            this.dragLogicalOperator9.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.dragLogicalOperator9.Name = "dragLogicalOperator9";
-            this.dragLogicalOperator9.Size = new System.Drawing.Size(143, 41);
-            this.dragLogicalOperator9.TabIndex = 25;
+            this.dragLogicalOperator11.DisplayText = "N <= N";
+            this.dragLogicalOperator11.Location = new System.Drawing.Point(162, 122);
+            this.dragLogicalOperator11.LogicalOperation = "NUMBERS_LESS_OR_EQUAL";
+            this.dragLogicalOperator11.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.dragLogicalOperator11.Name = "dragLogicalOperator11";
+            this.dragLogicalOperator11.Size = new System.Drawing.Size(143, 41);
+            this.dragLogicalOperator11.TabIndex = 27;
             // 
             // dragLogicalOperator10
             // 
@@ -354,15 +346,35 @@
             this.dragLogicalOperator10.Size = new System.Drawing.Size(143, 41);
             this.dragLogicalOperator10.TabIndex = 26;
             // 
-            // dragLogicalOperator11
+            // dragLogicalOperator9
             // 
-            this.dragLogicalOperator11.DisplayText = "N <= N";
-            this.dragLogicalOperator11.Location = new System.Drawing.Point(162, 122);
-            this.dragLogicalOperator11.LogicalOperation = "NUMBERS_LESS_OR_EQUAL";
-            this.dragLogicalOperator11.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.dragLogicalOperator11.Name = "dragLogicalOperator11";
-            this.dragLogicalOperator11.Size = new System.Drawing.Size(143, 41);
-            this.dragLogicalOperator11.TabIndex = 27;
+            this.dragLogicalOperator9.DisplayText = "N >= N";
+            this.dragLogicalOperator9.Location = new System.Drawing.Point(460, 122);
+            this.dragLogicalOperator9.LogicalOperation = "NUMBERS_GREATER_OR_EQUAL";
+            this.dragLogicalOperator9.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.dragLogicalOperator9.Name = "dragLogicalOperator9";
+            this.dragLogicalOperator9.Size = new System.Drawing.Size(143, 41);
+            this.dragLogicalOperator9.TabIndex = 25;
+            // 
+            // dragLogicalOperator8
+            // 
+            this.dragLogicalOperator8.DisplayText = "N > N";
+            this.dragLogicalOperator8.Location = new System.Drawing.Point(609, 122);
+            this.dragLogicalOperator8.LogicalOperation = "NUMBERS_GREATER_THAN";
+            this.dragLogicalOperator8.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.dragLogicalOperator8.Name = "dragLogicalOperator8";
+            this.dragLogicalOperator8.Size = new System.Drawing.Size(143, 41);
+            this.dragLogicalOperator8.TabIndex = 24;
+            // 
+            // dragStringOperator3
+            // 
+            this.dragStringOperator3.DisplayText = "TO STRING";
+            this.dragStringOperator3.Location = new System.Drawing.Point(162, 318);
+            this.dragStringOperator3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.dragStringOperator3.Name = "dragStringOperator3";
+            this.dragStringOperator3.Size = new System.Drawing.Size(143, 41);
+            this.dragStringOperator3.StringOperation = "TO_STRING";
+            this.dragStringOperator3.TabIndex = 28;
             // 
             // ExpressionBuilder
             // 
@@ -413,5 +425,6 @@
         private Draggables.Operators.DragLogicalOperator dragLogicalOperator10;
         private Draggables.Operators.DragLogicalOperator dragLogicalOperator9;
         private Draggables.Operators.DragLogicalOperator dragLogicalOperator8;
+        private Draggables.Operators.DragStringOperator dragStringOperator3;
     }
 }

@@ -1,16 +1,23 @@
-﻿Undo in expression builder
-Default values for variables
-More string operations: compare, letter x of string
-DrawStringInsideBox helper write on multiple lines
-Tooltips on blocks
-Pictures on buttons on MainForm
+﻿Reading past list end must not crash app
 Remember last program between restarts
+Undo in expression builder
+Default values for variables
+Input / read element of list
+Tooltips on blocks
+More string operations: compare, letter x of string
 Rounded corners on blocks and draggables
+Zoom in and out where the mouse is
+DrawStringInsideBox helper write on multiple lines
+Pictures on buttons on MainForm
 Nicer color scheme
 Draggable pictures instead of the standard cursor
 Random floating blocks in Expression builder (temporary / buffer etc)
 Refactor Save and Load (JSON ?)
 Zoom out Expression Builder
-Zoom in and out where the mouse is
 Play/pause semi-debug mode
 Ask Are you sure? when canceling modified builder or closing app with modified flowchart
+Maintain scroll when adding or deleting blocks
+Infinite loop cannot stop program (run on separate thread?)
+Routines
+When loading reset undo/redo stacks
+Fix display bug when connectors overlap blocks (e.g. when bubble sorting)

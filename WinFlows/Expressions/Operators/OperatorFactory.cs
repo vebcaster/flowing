@@ -37,6 +37,7 @@ namespace WinFlows.Expressions.Operators
                 // Strings
                 "CONCAT" => new StringConcatenateOperator(),
                 "STRING_ELEMENT_OF_LIST" => new StringElementOfListOperator(),
+                "TO_STRING" => new NumberToStringOperator(),
 
                 // What is this?
                 _ => throw new NotImplementedException($"OperatorFactory cannot build {op}")
