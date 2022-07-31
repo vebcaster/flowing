@@ -103,5 +103,40 @@ namespace WinFlows
             if (flowChart.CanRedo)
                 flowChart.Redo();
         }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            var path = Path.GetDirectoryName(Application.ExecutablePath);
+            var full = path + "\\last.pro";
+            if (File.Exists(full))
+            {
+                try
+                {
+                    var load = File.ReadAllText(full);
+                    FlowChart.Instance.LoadFromString(load);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Could not load last program, cannot continue where you left off. Error was {ex.Message}");
+                    FlowChart.Instance.Reset();
+                }
+            }
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var path = Path.GetDirectoryName(Application.ExecutablePath);
+            var full = path + "\\last.pro";
+            var save = FlowChart.Instance.GetSaveString();
+
+            try
+            {
+                File.WriteAllText(full, save);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Could not save last program, won't be able to continue where you left off. Error was {ex.Message}");
+            }
+        }
     }
 }

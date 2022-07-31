@@ -1,5 +1,4 @@
-﻿Remember last program between restarts
-Undo in expression builder
+﻿Undo in expression builder
 Default values for variables
 Input / read element of list
 Tooltips on blocks
